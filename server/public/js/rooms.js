@@ -1,6 +1,6 @@
 // rooms.js - shared script for fetching and displaying room availability
 const Rooms = (function () {
-  const API_BASE = '';
+  const API_BASE = 'https://hotel-maxx-backend.onrender.com';
   let socket = null;
   let intervalId = null;
 
@@ -88,7 +88,7 @@ const Rooms = (function () {
   async function adminAdd(type) {
     const headers = {};
     if (window.ADMIN_TOKEN) headers['x-admin-password'] = window.ADMIN_TOKEN;
-    const resp = await fetch(`/api/admin/add/${encodeURIComponent(type)}`, { method: 'POST', headers });
+    const resp = await fetch(`https://hotel-maxx-backend.onrender.com/api/admin/add/${encodeURIComponent(type)}`, { method: 'POST', headers });
     if (!resp.ok) throw new Error('Add failed');
     return resp.json();
   }
@@ -102,7 +102,7 @@ const Rooms = (function () {
       headers['Content-Type'] = 'application/json';
       opts.body = JSON.stringify(body);
     }
-    const resp = await fetch(`/api/admin/remove/${encodeURIComponent(type)}`, opts);
+    const resp = await fetch(`https://hotel-maxx-backend.onrender.com/api/admin/remove/${encodeURIComponent(type)}`, opts);
     if (!resp.ok) throw new Error('Remove failed');
     return resp.json();
   }
@@ -110,7 +110,7 @@ const Rooms = (function () {
   async function adminFetchBlocks() {
     const headers = {};
     if (window.ADMIN_TOKEN) headers['x-admin-password'] = window.ADMIN_TOKEN;
-    const resp = await fetch('/api/admin/blocks', { headers });
+    const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/admin/blocks', { headers });
     if (!resp.ok) throw new Error('Failed to fetch blocks');
     return resp.json();
   }
@@ -118,7 +118,7 @@ const Rooms = (function () {
   async function adminCancelBlock(id) {
     const headers = { 'Content-Type': 'application/json' };
     if (window.ADMIN_TOKEN) headers['x-admin-password'] = window.ADMIN_TOKEN;
-    const resp = await fetch('/api/admin/blocks/cancel', { method: 'POST', headers, body: JSON.stringify({ id }) });
+    const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/admin/blocks/cancel', { method: 'POST', headers, body: JSON.stringify({ id }) });
     if (!resp.ok) throw new Error('Cancel block failed');
     return resp.json();
   }
@@ -126,7 +126,7 @@ const Rooms = (function () {
   async function adminUpdate(type, data) {
     const headers = { 'Content-Type': 'application/json' };
     if (window.ADMIN_TOKEN) headers['x-admin-password'] = window.ADMIN_TOKEN;
-    const resp = await fetch(`/api/admin/update/${encodeURIComponent(type)}`, {
+    const resp = await fetch(`https://hotel-maxx-backend.onrender.com/api/admin/update/${encodeURIComponent(type)}`, {
       method: 'POST',
       headers,
       body: JSON.stringify(data)
@@ -138,7 +138,7 @@ const Rooms = (function () {
   async function adminReset() {
     const headers = {};
     if (window.ADMIN_TOKEN) headers['x-admin-password'] = window.ADMIN_TOKEN;
-    const resp = await fetch('/api/admin/reset', { method: 'POST', headers });
+    const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/admin/reset', { method: 'POST', headers });
     if (!resp.ok) throw new Error('Reset failed');
     return resp.json();
   }

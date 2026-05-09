@@ -169,7 +169,7 @@
         const loginMsg = document.getElementById('loginMsg');
 
         try {
-            const response = await fetch('/api/admin/auth', {
+            const response = await fetch('https://hotel-maxx-backend.onrender.com/api/admin/auth', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ password })
@@ -194,7 +194,7 @@
 
     async function addRoom(roomName) {
         try {
-            const response = await fetch('/api/update', {
+            const response = await fetch('https://hotel-maxx-backend.onrender.com/api/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -219,7 +219,7 @@
 
     async function removeRoom(roomName) {
         try {
-            const response = await fetch('/api/update', {
+            const response = await fetch('https://hotel-maxx-backend.onrender.com/api/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -250,7 +250,7 @@
         }
 
         try {
-            const response = await fetch('/api/block', {
+            const response = await fetch('https://hotel-maxx-backend.onrender.com/api/block', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -278,7 +278,7 @@
 
     async function restoreRoom(roomName) {
         try {
-            const response = await fetch('/api/unblock', {
+            const response = await fetch('https://hotel-maxx-backend.onrender.com/api/unblock', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -300,7 +300,7 @@
 
     async function fetchRooms() {
         try {
-            const response = await fetch('/api/rooms');
+            const response = await fetch('https://hotel-maxx-backend.onrender.com/api/rooms');
             const rooms = await response.json();
             renderAdminRooms(rooms);
             updateStats(rooms);

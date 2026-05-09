@@ -82,7 +82,7 @@
 
       addBtn.addEventListener('click', async () => {
         try {
-          const resp = await fetch('/api/update', { method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-password': ADMIN_TOKEN }, body: JSON.stringify({ type: r.type, available: avail+1 }) });
+          const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/update', { method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-password': ADMIN_TOKEN }, body: JSON.stringify({ type: r.type, available: avail+1 }) });
           if (!resp.ok) throw new Error('Add failed');
           await refreshRooms();
         } catch (e) { alert('Add failed'); }
@@ -94,7 +94,7 @@
           let untilStr = prompt('Block until (e.g. 2025-10-23T15:00:00 or 2025-10-23 03:00:00am)');
           if (!untilStr) return;
           untilStr = normalizeDateTimeInput(untilStr);
-          const resp = await fetch('/api/block', { method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-password': window.ADMIN_TOKEN || ADMIN_TOKEN }, body: JSON.stringify({ type: r.type, qty, until: untilStr, reason: 'manual' }) });
+          const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/block', { method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-password': window.ADMIN_TOKEN || ADMIN_TOKEN }, body: JSON.stringify({ type: r.type, qty, until: untilStr, reason: 'manual' }) });
           if (!resp.ok) throw new Error('Block failed');
           await refreshRooms();
           await fetchActivity();
@@ -108,7 +108,7 @@
           if (!untilStr) return;
           untilStr = normalizeDateTimeInput(untilStr);
           const reason = prompt('Reason for block?', 'maintenance') || '';
-          const resp = await fetch('/api/block', { method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-password': window.ADMIN_TOKEN || ADMIN_TOKEN }, body: JSON.stringify({ type: r.type, qty, until: untilStr, reason }) });
+          const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/block', { method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-password': window.ADMIN_TOKEN || ADMIN_TOKEN }, body: JSON.stringify({ type: r.type, qty, until: untilStr, reason }) });
           if (!resp.ok) throw new Error('Block failed');
           await refreshRooms();
           await fetchActivity();
@@ -117,7 +117,7 @@
 
       restoreBtn.addEventListener('click', async () => {
         try {
-          const resp = await fetch('/api/unblock', { method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-password': ADMIN_TOKEN }, body: JSON.stringify({ type: r.type, qty: 1 }) });
+          const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/unblock', { method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-password': ADMIN_TOKEN }, body: JSON.stringify({ type: r.type, qty: 1 }) });
           if (!resp.ok) throw new Error('Restore failed');
           await refreshRooms();
           await fetchActivity();
@@ -130,7 +130,7 @@
 
   async function refreshRooms() {
     try {
-      const resp = await fetch('/api/rooms');
+      const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/rooms');
       const rooms = await resp.json();
       renderAdminRooms(rooms);
     } catch (e) { console.error(e); }
@@ -140,7 +140,7 @@
     // Trim whitespace to avoid accidental spaces causing login failures
     const pass = String(document.getElementById('adminPassword').value || '').trim();
     try {
-      const resp = await fetch('/api/admin/auth', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
+      const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/admin/auth', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
       if (!resp.ok) { loginMsg.textContent = 'Invalid password'; return; }
   const data = await resp.json();
   ADMIN_TOKEN = data.token;
@@ -162,7 +162,7 @@
   if (resetBtn) resetBtn.addEventListener('click', async () => {
     if (!confirm('Reset all rooms to defaults?')) return;
     try {
-      const resp = await fetch('/api/admin/reset', { method: 'POST', headers: { 'x-admin-password': ADMIN_TOKEN } });
+      const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/admin/reset', { method: 'POST', headers: { 'x-admin-password': ADMIN_TOKEN } });
       if (!resp.ok) throw new Error('Reset failed');
       await refreshRooms();
       await fetchActivity();
@@ -173,12 +173,12 @@
   // Expose fetchAvailable for pages like check.html that rely on it
   window.fetchAvailable = async function (checkin, checkout, roomType) {
     try {
-      const url = new URL('/api/rooms', window.location.origin);
+      const url = new URL('https://hotel-maxx-backend.onrender.com/api/rooms');
       const resp = await fetch(url);
       const rooms = await resp.json();
       // if user provided dates, query booking availability per type
       if (checkin && checkout && roomType) {
-        const avResp = await fetch('/api/rooms/available?checkin=' + encodeURIComponent(checkin) + '&checkout=' + encodeURIComponent(checkout));
+        const avResp = await fetch('https://hotel-maxx-backend.onrender.com/api/rooms/available?checkin=' + encodeURIComponent(checkin) + '&checkout=' + encodeURIComponent(checkout));
         const data = await avResp.json();
         // find requested type
         const found = (data.rooms || []).find(r => r.type.toLowerCase() === roomType.toLowerCase());

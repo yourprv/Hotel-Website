@@ -101,7 +101,7 @@ const aiAssistant = {
         // Process message via unified /api/ai endpoint (passes searchMode flag)
         try {
             const useWebSearch = !!(this.aiSearchToggle && this.aiSearchToggle.checked);
-            const resp = await fetch('/api/ai', {
+            const resp = await fetch('https://hotel-maxx-backend.onrender.com/api/ai', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt: message, searchMode: useWebSearch })
@@ -290,7 +290,7 @@ const aiAssistant = {
     },
 
     async searchWeb(query) {
-    const url = '/api/search';
+    const url = 'https://hotel-maxx-backend.onrender.com/api/search';
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -312,7 +312,7 @@ const aiAssistant = {
 
 
     async queryGemini(message, searchResults = '') {
-    const url = '/api/gemini';
+    const url = 'https://hotel-maxx-backend.onrender.com/api/gemini';
         try {
             const response = await fetch(url, {
                 method: 'POST',
