@@ -48,6 +48,7 @@ const io = socketIo(server, { cors: { origin: '*' } });
 // ---------------------------------------
 // ✅ Middleware
 // ---------------------------------------
+app.use(cors());
 app.use(express.json());
 // Serve static assets and enable clean URLs (e.g., `/about` -> `about.html`).
 // `extensions: ['html']` lets requests without `.html` resolve to the corresponding file.
