@@ -89,6 +89,7 @@ const allowedOrigins = new Set([
   'http://localhost:5000',
   'http://127.0.0.1:5000',
   'https://hotel-website-nine-coral.vercel.app',
+  'https://hotel-website-yourprv.vercel.app',
   'https://generativelanguage.googleapis.com'
 ]);
 if (process.env.CORS_ORIGIN) {
