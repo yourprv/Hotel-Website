@@ -48,15 +48,6 @@ const io = socketIo(server, { cors: { origin: '*' } });
 // ---------------------------------------
 // ✅ Middleware
 // ---------------------------------------
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'https://hotel-website-nine-coral.vercel.app'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
 app.use(express.json());
 // Serve static assets and enable clean URLs (e.g., `/about` -> `about.html`).
 // `extensions: ['html']` lets requests without `.html` resolve to the corresponding file.
@@ -94,8 +85,10 @@ const allowedOrigins = new Set([
   'http://127.0.0.1:5500',
   'http://localhost:5500',
   'http://localhost:3000',
+  'http://localhost:5173',
   'http://localhost:5000',
   'http://127.0.0.1:5000',
+  'https://hotel-website-nine-coral.vercel.app',
   'https://generativelanguage.googleapis.com'
 ]);
 if (process.env.CORS_ORIGIN) {
@@ -130,6 +123,13 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Admin-Password']
 };
 app.use(cors(corsOptions));
+
+// ---------------------------------------
+// ✅ Test route
+// ---------------------------------------
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Backend working' });
+});
 
 // ---------------------------------------
 // ✅ Constants and helpers
@@ -794,7 +794,7 @@ app.post('/api/ai', async (req, res) => {
 
     res.json({ response: cleanedResponse, success: true, sources, searchError });
   } catch (error) {
-    console.error('Error processing AI request:', error && (error.message || error));
+    console.error(error.response?.data || error.message);
     // If Gemini is rate-limited, return a friendly plain-text message to the client
     if (error && error.isRateLimit) {
       console.warn('Gemini rate limit hit during /api/ai, returning friendly message');
