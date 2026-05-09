@@ -1,0 +1,2622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Rooms & Suites | Hotel Maxx Kohalpur | Premium 4-Star Hotel in Banke, Nepal</title>
+    <meta name="description" content="Experience luxury in our premium rooms & suites at Hotel Maxx Kohalpur. Choose from Standard Suite, Deluxe Room, Junior Suite & Triple Deluxe with world-class amenities.">
+    <meta name="keywords" content="Hotel Maxx Kohalpur rooms, luxury hotel rooms Nepal, Kohalpur accommodation, Standard Suite, Deluxe Room, Junior Suite, Triple Deluxe, hotel in Banke, 4-star hotel Nepal">
+    <meta name="author" content="Hotel Maxx">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Socket.io client -->
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.hotelmaxx.com.np/rooms.html">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hotelmaxx.com.np/rooms.html">
+    <meta property="og:title" content="Luxury Rooms & Suites | Hotel Maxx Kohalpur | Premium 4-Star Hotel in Banke, Nepal">
+    <meta property="og:description" content="Experience luxury in our premium rooms & suites at Hotel Maxx Kohalpur. World-class amenities with Nepalese hospitality.">
+    <meta property="og:image" content="https://www.hotelmaxx.com.np/images/hotel-maxx-rooms-preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.hotelmaxx.com.np/rooms.html">
+    <meta property="twitter:title" content="Luxury Rooms & Suites | Hotel Maxx Kohalpur | Premium 4-Star Hotel in Banke, Nepal">
+    <meta property="twitter:description" content="Experience luxury in our premium rooms & suites at Hotel Maxx Kohalpur. World-class amenities with Nepalese hospitality.">
+    <meta property="twitter:image" content="https://www.hotelmaxx.com.np/images/hotel-maxx-rooms-preview.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="maxx.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/rooms.css">
+    
+    <!-- AOS Library for Scroll Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #c19a6b;
+            --secondary: #1a2c3e;
+            --accent: #e6d2b9;
+            --light: #f8f5f0;
+            --dark: #0f1c28;
+            --text: #333333;
+            --glass-dark: #0d1a26;
+            --white: #ffffff;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #ffffff;
+            --footer-bg: #1a2c3e;
+            --header-bg: rgba(13, 26, 38, 0.85);
+            --border-color: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0a121f;
+            --text-color: #f5f5f5;
+            --card-bg: #151f2e;
+            --footer-bg: #0d1724;
+            --header-bg: rgba(13, 26, 38, 0.85);
+            --light: #1a2c3e;
+            --border-color: #2a3b4c;
+            --text: #f5f5f5;
+            --secondary: #2d4a6c;
+            --glass-dark: #0d1724;
+        }
+
+        /* Enhanced Dark Mode Styles */
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, var(--bg-color) 0%, #0d1724 100%);
+            color: var(--text-color);
+        }
+
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p, span, li, a, label, input, textarea {
+            color: var(--text-color);
+        }
+
+        /* Header - Fixed for dark mode */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            transition: all 0.4s ease;
+            box-shadow: none;
+            border-bottom: none;
+        }
+
+        header.scrolled {
+            background: var(--header-bg);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            padding: 15px 5%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* FIXED: Ensure header remains consistent in dark mode */
+        [data-theme="dark"] header {
+            background: transparent;
+        }
+
+        [data-theme="dark"] header.scrolled {
+            background: var(--header-bg);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+        }
+
+        /* FIXED: Navigation background in dark mode */
+        [data-theme="dark"] nav ul li a {
+            background: transparent !important;
+        }
+
+        [data-theme="dark"] nav ul li a:hover {
+            background: transparent !important;
+        }
+        /* Prevent browser/OS from drawing dark focus/active backgrounds on links/buttons
+           that can appear as black rectangles around items like 'Home' and the theme toggle. */
+        [data-theme="dark"] nav ul li a:focus,
+        [data-theme="dark"] nav ul li a:active,
+        [data-theme="dark"] .theme-toggle:focus,
+        [data-theme="dark"] .theme-toggle:active {
+            background: transparent !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        /* Use :focus-visible to preserve keyboard accessibility with a subtle ring
+           instead of a filled background. Modern browsers support :focus-visible. */
+        [data-theme="dark"] nav ul li a:focus-visible,
+        [data-theme="dark"] .theme-toggle:focus-visible {
+            box-shadow: 0 0 0 3px rgba(193,154,107,0.2) !important;
+            border-radius: 8px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 0 15px rgba(255, 255, 255, 0.2),
+                0 0 30px rgba(193, 154, 107, 0.15),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: pulse 3s infinite;
+            transition: all 0.5s ease;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .logo:before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.1) 50%, 
+                rgba(255,255,255,0) 100%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: shine 3s infinite;
+        }
+
+        .logo:hover {
+            transform: scale(1.05) translateZ(0);
+            box-shadow: 
+                0 0 25px rgba(255, 255, 255, 0.3),
+                0 0 50px rgba(193, 154, 107, 0.2),
+                inset 0 0 20px rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .logo img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            filter: brightness(1.1) contrast(1.1);
+            transition: all 0.5s ease;
+        }
+
+        .logo:hover img {
+            transform: scale(1.05) translateZ(0);
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+            position: relative;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            padding: 8px 0;
+            transition: all 0.3s;
+            position: relative;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-size: 1rem;
+            background: transparent;
+        }
+
+        /* Underline animation for regular links */
+        nav ul li a:not(.book-btn):after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:not(.book-btn):hover:after {
+            width: 100%;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+            background: transparent;
+        }
+
+        /* Book Now button styling */
+        .book-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(193, 154, 107, 0.3);
+        }
+
+        .book-btn:hover {
+            background: var(--accent);
+            color: var(--secondary);
+            transform: translateY(-3px) translateZ(0);
+            box-shadow: 0 6px 20px rgba(193, 154, 107, 0.4);
+        }
+
+        /* Keep Book Now button appearance consistent in dark mode */
+        [data-theme="dark"] .book-btn {
+            background: var(--primary) !important;
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(193, 154, 107, 0.3) !important;
+        }
+
+        [data-theme="dark"] .book-btn:hover {
+            background: var(--accent) !important;
+            color: var(--secondary) !important;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Rooms Hero Section - Blended with Header */
+        .rooms-hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            text-align: center;
+            color: white;
+            margin-top: 0;
+        }
+
+        .rooms-hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(15, 28, 40, 0.3), rgba(15, 28, 40, 0.7)), 
+                        url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            z-index: -1;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .rooms-hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease 0.5s forwards;
+            position: relative;
+            z-index: 2;
+        }
+        /* Live availability grid styles */
+        .availability-grid { display:flex; flex-wrap:wrap; gap:12px; margin:20px 0 }
+        .room-card { background: #fff; padding:12px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.06); width:200px }
+
+        .rooms-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: white;
+            animation: slideInFromTop 1s ease 0.7s forwards;
+            opacity: 0;
+        }
+
+        .rooms-hero p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-weight: 300;
+            color: white;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideInFromBottom 1s ease 0.9s forwards;
+            opacity: 0;
+        }
+
+        /* Floating Elements - Optimized */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 12s infinite linear;
+            transform: translateZ(0);
+            will-change: transform, opacity;
+        }
+
+        .fe-1 {
+            width: 60px;
+            height: 60px;
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .fe-2 {
+            width: 30px;
+            height: 30px;
+            top: 65%;
+            left: 85%;
+            animation-delay: 2s;
+        }
+
+        .fe-3 {
+            width: 45px;
+            height: 45px;
+            top: 80%;
+            left: 15%;
+            animation-delay: 4s;
+        }
+
+        .fe-4 {
+            width: 25px;
+            height: 25px;
+            top: 25%;
+            left: 80%;
+            animation-delay: 6s;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--text-color);
+            max-width: 600px;
+            margin: 20px auto 0;
+            font-size: 1.1rem;
+        }
+
+        /* Room Availability Checker */
+        .availability-checker {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            max-width: 900px;
+            margin: 40px auto;
+            border: 1px solid var(--border-color);
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .availability-checker.animated {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .availability-checker h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+
+        .availability-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(193, 154, 107, 0.2);
+        }
+
+        .availability-checker .btn {
+            align-self: end;
+            width: 100%;
+        }
+
+        /* Rooms Detail Section - Detailed View */
+        .rooms-detail {
+            background: var(--light);
+        }
+
+        .room-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .room-detail {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 80px;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .room-detail.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .room-detail:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .room-detail:hover {
+            transform: translateY(-10px) translateZ(0);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .room-detail-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .room-detail-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.8s ease;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .room-detail:hover .room-detail-image img {
+            transform: scale(1.08) translateZ(0);
+        }
+
+        .room-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.7));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            color: white;
+        }
+
+        .room-detail:hover .room-image-overlay {
+            opacity: 1;
+        }
+
+        .room-detail-content {
+            flex: 1;
+        }
+
+        .room-detail-content h3 {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .room-detail-content h3:after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            bottom: -8px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .room-detail-content p {
+            margin: 20px 0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .room-features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .room-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .room-feature-item:hover {
+            background: rgba(193, 154, 107, 0.1);
+            transform: translateX(5px);
+        }
+
+        .room-feature-item i {
+            color: var(--primary);
+            width: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .room-feature-item:hover i {
+            transform: scale(1.2);
+        }
+
+        .room-price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .room-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            position: relative;
+        }
+
+        .room-price:before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.5s ease;
+        }
+
+        .room-price:hover:before {
+            width: 100%;
+        }
+
+        .room-price span {
+            font-size: 1rem;
+            color: var(--text-color);
+            font-weight: normal;
+        }
+
+        /* Room Amenities Section - Improved like home.html */
+        .room-amenities {
+            background: var(--bg-color);
+        }
+
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .amenity-card {
+            background: var(--card-bg);
+            padding: 30px 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transform: translateZ(0);
+            will-change: transform;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .amenity-card.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .amenity-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .amenity-card:hover:before {
+            transform: scaleX(1);
+        }
+
+        .amenity-card:hover {
+            transform: translateY(-10px) translateZ(0);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .amenity-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--secondary);
+            font-size: 25px;
+            transition: all 0.3s;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .amenity-card:hover .amenity-icon {
+            background: var(--primary);
+            color: white;
+            transform: rotateY(180deg) translateZ(0);
+        }
+
+        .amenity-card h3 {
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-size: 1.3rem;
+        }
+
+        .amenity-card p {
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .cta-section .section-title {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--accent);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            transform: translateZ(0);
+            will-change: transform;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(193, 154, 107, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            color: var(--secondary);
+            transform: translateY(-5px) translateZ(0);
+            box-shadow: 0 8px 20px rgba(193, 154, 107, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--secondary);
+            transform: translateY(-5px) translateZ(0);
+        }
+
+        .bounce-on-hover:hover {
+            animation: bounce 1s;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--footer-bg);
+            color: white;
+            padding: 60px 5% 25px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--accent);
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            bottom: -8px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .footer-column p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            color: #ccc;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px) translateZ(0);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* AI Assistant Styles */
+        .ai-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+
+        .ai-toggle {
+            background: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(193, 154, 107, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .ai-toggle:hover {
+            background: var(--accent);
+            color: var(--secondary);
+            transform: scale(1.1) translateZ(0);
+        }
+
+        .ai-toggle span {
+            position: absolute;
+            white-space: nowrap;
+            background: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            right: 70px;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .ai-toggle:hover span {
+            opacity: 1;
+            right: 75px;
+        }
+
+        .ai-chat-container {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .ai-chat-container.active {
+            display: flex;
+        }
+
+        .ai-header {
+            background: var(--secondary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* AI header text to be white in both modes */
+        .ai-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .ai-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ai-message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+            animation: messageAppear 0.3s ease;
+        }
+
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-message.user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-message.bot {
+            align-self: flex-start;
+            background: var(--light);
+            color: var(--text-color);
+            border-bottom-left-radius: 5px;
+        }
+
+        .ai-message.bot strong {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .ai-chat-input {
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            outline: none;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .ai-chat-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ai-chat-input button:hover {
+            background: var(--accent);
+            color: var(--secondary);
+        }
+
+        .ai-search-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            padding: 0 15px 15px;
+        }
+
+        /* Modern search toggle button */
+        .ai-search-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            font-size: 0.95rem;
+        }
+
+        .ai-search-btn .ai-search-icon { width: 20px; height:20px; display:inline-flex; align-items:center; justify-content:center; }
+
+        .ai-search-btn[aria-pressed="true"] { background: var(--primary); color: white; border-color: transparent; box-shadow: 0 6px 18px rgba(193,154,107,0.18); }
+
+        .ai-typing { display:none; margin-top:10px; padding:0 20px }
+        .ai-typing.active { display:block }
+
+        /* Polished typing bubble */
+        .ai-typing-bubble {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 20px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+            max-width: 320px;
+        }
+
+        .ai-typing-bubble .label { font-size: 0.9rem; color: var(--secondary); font-weight:600 }
+
+        .ai-typing-bubble .dots { display:inline-flex; gap:6px; margin-left:6px; }
+        .ai-typing-bubble .dot { width:8px; height:8px; background:var(--primary); border-radius:50%; opacity:0.3; transform: translateY(0); }
+        .ai-typing-bubble .dot:nth-child(1) { animation: dotBounce 0.9s infinite 0s; }
+        .ai-typing-bubble .dot:nth-child(2) { animation: dotBounce 0.9s infinite 0.15s; }
+        .ai-typing-bubble .dot:nth-child(3) { animation: dotBounce 0.9s infinite 0.3s; }
+
+        @keyframes dotBounce { 0% { transform: translateY(0); opacity:0.35 } 50% { transform: translateY(-6px); opacity:1 } 100% { transform: translateY(0); opacity:0.35 } }
+
+        /* New Animations */
+        @keyframes pulse {
+            0% { transform: scale(1) translateZ(0); }
+            50% { transform: scale(1.03) translateZ(0); }
+            100% { transform: scale(1) translateZ(0); }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg) translateZ(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg) translateZ(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFromBottom {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateZ(0);
+            }
+            40% {
+                transform: translateY(-10px) translateZ(0);
+            }
+            60% {
+                transform: translateY(-5px) translateZ(0);
+            }
+        }
+
+        /* Lazy loading */
+        .lazy {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .lazy.loaded {
+            opacity: 1;
+        }
+
+        /* Performance optimizations */
+        .optimized-transform {
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .optimized-opacity {
+            will-change: opacity;
+        }
+
+        /* Responsive Design - Improved Mobile Experience */
+        @media (max-width: 1200px) {
+            .room-detail {
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .room-detail {
+                flex-direction: column !important;
+                gap: 30px;
+            }
+            
+            .room-detail-image, .room-detail-content {
+                flex: none;
+                width: 100%;
+            }
+            
+            .rooms-hero h1 {
+                font-size: 3rem;
+            }
+            
+            .rooms-hero p {
+                font-size: 1.1rem;
+            }
+            
+            .amenities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Improved Mobile Header */
+            header {
+                padding: 15px 5%;
+                width: 100%;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(15, 28, 40, 0.98);
+                backdrop-filter: blur(10px);
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 999;
+                padding: 0;
+            }
+            
+            nav.active {
+                display: flex;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                padding: 0;
+            }
+            
+            nav ul li {
+                margin: 0;
+                text-align: center;
+                padding: 15px 0;
+            }
+            
+            nav ul li a {
+                font-size: 1.2rem;
+                padding: 10px 20px;
+            }
+            
+            /* Improved Mobile Hero Section */
+            .rooms-hero {
+                height: 80vh;
+                padding: 0 5%;
+            }
+
+            .rooms-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .rooms-hero p {
+                font-size: 1rem;
+            }
+            
+            .room-detail {
+                padding: 25px;
+                margin-bottom: 50px;
+            }
+            
+            .room-detail-content h3 {
+                font-size: 1.8rem;
+            }
+            
+            .room-features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .room-price-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .amenities-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .availability-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .ai-toggle span {
+                display: none;
+            }
+
+            .ai-chat-container {
+                width: 300px;
+                height: 450px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rooms-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .rooms-hero p {
+                font-size: 0.9rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .room-detail {
+                padding: 20px;
+            }
+            
+            .room-detail-content h3 {
+                font-size: 1.5rem;
+            }
+            
+            .room-price {
+                font-size: 1.5rem;
+            }
+            
+            .ai-chat-container {
+                width: 280px;
+                height: 400px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Dark Mode Styles for other elements */
+        [data-theme="dark"] .section-title h2 {
+            color: #f5f5f5;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .section-title p {
+            color: #e6e6e6;
+        }
+
+        [data-theme="dark"] .room-amenities {
+            background: linear-gradient(135deg, var(--bg-color) 0%, #0d1724 100%);
+        }
+
+        [data-theme="dark"] .rooms-detail {
+            background: linear-gradient(135deg, #151f2e 0%, #1a2c3e 100%);
+        }
+
+        [data-theme="dark"] .room-detail,
+        [data-theme="dark"] .amenity-card,
+        [data-theme="dark"] .availability-checker {
+            background: var(--card-bg);
+            border: 1px solid rgba(193, 154, 107, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .room-detail::before,
+        [data-theme="dark"] .amenity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        [data-theme="dark"] .room-detail:hover,
+        [data-theme="dark"] .amenity-card:hover {
+            transform: translateY(-8px) translateZ(0);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+        }
+
+        [data-theme="dark"] .amenity-icon {
+            background: linear-gradient(135deg, rgba(193, 154, 107, 0.2) 0%, rgba(193, 154, 107, 0.1) 100%);
+            color: var(--primary);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+        }
+
+        [data-theme="dark"] .amenity-card:hover .amenity-icon {
+            background: linear-gradient(135deg, var(--primary) 0%, #d4af7a 100%);
+            color: #1a2c3e;
+            transform: rotateY(180deg) scale(1.1) translateZ(0);
+            box-shadow: 0 0 20px rgba(193, 154, 107, 0.4);
+        }
+
+        [data-theme="dark"] .room-price {
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(193, 154, 107, 0.3);
+        }
+
+        [data-theme="dark"] .room-detail-content h3,
+        [data-theme="dark"] .amenity-card h3 {
+            color: #f5f5f5;
+        }
+
+        [data-theme="dark"] .room-detail-content p,
+        [data-theme="dark"] .amenity-card p,
+        [data-theme="dark"] .room-feature-item {
+            color: #e6e6e6;
+        }
+
+        [data-theme="dark"] .room-feature-item i {
+            color: var(--primary);
+        }
+
+        [data-theme="dark"] .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #d4af7a 100%);
+            color: #1a2c3e;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 4px 20px rgba(193, 154, 107, 0.4);
+        }
+
+        [data-theme="dark"] .btn-primary:hover {
+            background: linear-gradient(135deg, #d4af7a 0%, #e6d2b9 100%);
+            transform: translateY(-3px) translateZ(0);
+            box-shadow: 0 8px 30px rgba(193, 154, 107, 0.6);
+        }
+
+        [data-theme="dark"] .btn-secondary {
+            background: transparent;
+            color: #f5f5f5;
+            border: 2px solid var(--primary);
+        }
+
+        [data-theme="dark"] .btn-secondary:hover {
+            background: var(--primary);
+            color: #1a2c3e;
+            transform: translateY(-3px) translateZ(0);
+            box-shadow: 0 8px 25px rgba(193, 154, 107, 0.3);
+        }
+
+        [data-theme="dark"] .form-control {
+            background: rgba(10, 18, 31, 0.7);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+            color: #f5f5f5;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .form-control:focus {
+            background: rgba(10, 18, 31, 0.9);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(193, 154, 107, 0.2), 0 0 20px rgba(193, 154, 107, 0.1);
+            color: #f5f5f5;
+        }
+
+        [data-theme="dark"] .form-control::placeholder {
+            color: #a0a0a0;
+        }
+
+        [data-theme="dark"] footer {
+            background: linear-gradient(135deg, var(--footer-bg) 0%, #0a121f 100%);
+            border-top: 1px solid rgba(193, 154, 107, 0.1);
+        }
+
+        [data-theme="dark"] .footer-column h3 {
+            color: var(--accent);
+        }
+
+        [data-theme="dark"] .footer-column p,
+        [data-theme="dark"] .footer-links a {
+            color: #cccccc;
+        }
+
+        [data-theme="dark"] .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(8px);
+        }
+
+        [data-theme="dark"] .social-link {
+            background: rgba(193, 154, 107, 0.1);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .social-link:hover {
+            background: var(--primary);
+            color: #1a2c3e;
+            transform: translateY(-5px) scale(1.1) translateZ(0);
+            box-shadow: 0 5px 15px rgba(193, 154, 107, 0.4);
+        }
+
+        [data-theme="dark"] .copyright {
+            border-top: 1px solid rgba(193, 154, 107, 0.1);
+            color: #a0a0a0;
+        }
+
+        /* AI Assistant Dark Mode */
+        [data-theme="dark"] .ai-chat-container {
+            background: linear-gradient(135deg, #151f2e 0%, #1a2c3e 100%);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .ai-header {
+            background: linear-gradient(135deg, var(--secondary) 0%, #2d4a6c 100%);
+            border-bottom: 1px solid rgba(193, 154, 107, 0.2);
+        }
+
+        [data-theme="dark"] .ai-message.bot {
+            background: rgba(193, 154, 107, 0.1);
+            color: #f5f5f5;
+            border: 1px solid rgba(193, 154, 107, 0.1);
+        }
+
+        [data-theme="dark"] .ai-message.user {
+            background: linear-gradient(135deg, var(--primary) 0%, #d4af7a 100%);
+            color: #1a2c3e;
+        }
+
+        [data-theme="dark"] .ai-chat-input {
+            border-top: 1px solid rgba(193, 154, 107, 0.1);
+            background: rgba(10, 18, 31, 0.7);
+        }
+
+        [data-theme="dark"] .ai-chat-input input {
+            background: rgba(10, 18, 31, 0.9);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+            color: #f5f5f5;
+        }
+
+        [data-theme="dark"] .ai-chat-input input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(193, 154, 107, 0.2);
+        }
+
+        [data-theme="dark"] .ai-chat-input button {
+            background: linear-gradient(135deg, var(--primary) 0%, #d4af7a 100%);
+            color: #1a2c3e;
+            box-shadow: 0 2px 10px rgba(193, 154, 107, 0.3);
+        }
+
+        [data-theme="dark"] .ai-chat-input button:hover {
+            background: linear-gradient(135deg, #d4af7a 0%, #e6d2b9 100%);
+            transform: scale(1.1) translateZ(0);
+            box-shadow: 0 4px 15px rgba(193, 154, 107, 0.5);
+        }
+
+        [data-theme="dark"] .ai-search-toggle {
+            color: #e6e6e6;
+            background: rgba(10, 18, 31, 0.7);
+        }
+
+        /* Enhanced Typography for Dark Mode */
+        [data-theme="dark"] h1, 
+        [data-theme="dark"] h2, 
+        [data-theme="dark"] h3, 
+        [data-theme="dark"] h4, 
+        [data-theme="dark"] h5 {
+            color: #f5f5f5;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] p, 
+        [data-theme="dark"] span, 
+        [data-theme="dark"] li, 
+        [data-theme="dark"] label {
+            color: #e6e6e6;
+        }
+
+        /* Navigation appearance in Dark Mode
+           Keep the header/nav visually seamless on desktop (transparent),
+           but retain a dark backdrop for the mobile menu overlay. */
+        [data-theme="dark"] nav {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: none !important;
+        }
+
+        /* For small screens (mobile) the nav acts as an overlay and should keep
+           a dark backdrop so the menu items are readable. */
+        @media (max-width: 768px) {
+            [data-theme="dark"] nav {
+                background: rgba(10, 18, 31, 0.98) !important;
+                backdrop-filter: blur(20px) saturate(180%) !important;
+                -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+                box-shadow: 0 5px 30px rgba(0, 0, 0, 0.4) !important;
+            }
+        }
+
+        /* Responsive improvements for dark mode */
+        @media (max-width: 768px) {
+            [data-theme="dark"] .room-detail,
+            [data-theme="dark"] .amenity-card {
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Schema Markup for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Hotel",
+        "name": "Hotel Maxx",
+        "description": "Premium business-class hotel in Kohalpur offering modern luxury with traditional Nepalese warmth.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Red Cross, Kohalpur",
+            "addressLocality": "Kohalpur",
+            "addressRegion": "Lumbini Province",
+            "postalCode": "21904",
+            "addressCountry": "Nepal"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 28.195968789650955,
+            "longitude": 81.68540914657724
+        },
+        "telephone": "+977-081-542077",
+        "email": "info@hotelmaxx.com.np",
+        "url": "https://www.hotelmaxx.com.np",
+        "priceRange": "$$",
+        "amenityFeature": [
+            "Free WiFi",
+            "Swimming Pool",
+            "Restaurant",
+            "Spa",
+            "Fitness Center",
+            "Conference Rooms",
+            "Bar"
+        ],
+        "starRating": {
+            "@type": "Rating",
+            "ratingValue": "4.5"
+        }
+    }
+    </script>
+
+    <!-- Room Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Hotel",
+        "name": "Hotel Maxx",
+        "makesOffer": [
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "HotelRoom",
+                    "name": "Standard Suite",
+                    "description": "Comfortable and well-appointed suite with all essential amenities, perfect for budget-conscious travelers seeking quality accommodation.",
+                    "occupancy": 2,
+                    "bed": {
+                        "@type": "BedDetails",
+                        "numberOfBeds": 1,
+                        "type": "QueenBed"
+                    },
+                    "amenityFeature": ["Free WiFi", "Air Conditioning", "LED TV", "Private Bathroom"],
+                    "floorSize": "30 m²"
+                },
+                "price": "2500",
+                "priceCurrency": "NPR"
+            },
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "HotelRoom",
+                    "name": "Deluxe Room",
+                    "description": "Spacious and elegantly furnished room with modern amenities and comfortable seating area, perfect for solo travelers or couples.",
+                    "occupancy": 2,
+                    "bed": {
+                        "@type": "BedDetails",
+                        "numberOfBeds": 1,
+                        "type": "KingBed"
+                    },
+                    "amenityFeature": ["Free WiFi", "Air Conditioning", "Smart TV", "Private Bathroom"],
+                    "floorSize": "35 m²"
+                },
+                "price": "3000",
+                "priceCurrency": "NPR"
+            },
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "HotelRoom",
+                    "name": "Junior Suite",
+                    "description": "Luxurious suite with separate living area, perfect for business travelers or extended stays with panoramic city views.",
+                    "occupancy": 3,
+                    "bed": {
+                        "@type": "BedDetails",
+                        "numberOfBeds": 2,
+                        "type": "KingBed"
+                    },
+                    "amenityFeature": ["Free WiFi", "Air Conditioning", "Smart TV", "Private Bathroom", "Sofa Bed"],
+                    "floorSize": "55 m²"
+                },
+                "price": "4500",
+                "priceCurrency": "NPR"
+            },
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "HotelRoom",
+                    "name": "Triple Deluxe",
+                    "description": "Spacious triple room perfect for families or groups, featuring comfortable bedding and ample space for relaxation.",
+                    "occupancy": 3,
+                    "bed": {
+                        "@type": "BedDetails",
+                        "numberOfBeds": 3,
+                        "type": "SingleBed"
+                    },
+                    "amenityFeature": ["Free WiFi", "Air Conditioning", "LED TV", "Private Bathroom", "Mini Fridge"],
+                    "floorSize": "45 m²"
+                },
+                "price": "3500",
+                "priceCurrency": "NPR"
+            }
+        ]
+    }
+    </script>
+
+    <header id="header">
+        <div class="logo-container">
+            <div class="logo" id="logo">
+                <img src="maxx.png" alt="Hotel Maxx Logo - Luxury Hotel in Kohalpur, Nepal">
+            </div>
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="aboutus.html">About US</a></li>
+                <li><a href="ourservices.html">Our Services and Amenities</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="rooms.html">Rooms</a></li>           
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="booking.html" class="book-btn">Book Now</a></li>
+                <li>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- AI Assistant -->
+    <div class="ai-assistant" id="aiAssistant">
+        <div class="ai-toggle" id="aiToggle">
+            <i class="fas fa-robot"></i>
+            <span>Maxx AI</span>
+        </div>
+        <div class="ai-chat-container" id="aiChat">
+            <div class="ai-header">
+                <h3>Maxx AI Assistant</h3>
+                <button class="ai-close" id="aiClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="ai-chat-messages" id="aiMessages">
+                <div class="ai-message bot">
+                    Hello! I'm Maxx AI, your virtual assistant for Hotel Maxx in Kohalpur, Nepal. How can I help you with your stay today?
+                </div>
+            </div>
+            <div class="ai-typing" id="aiTyping" role="status" aria-live="polite">
+                <div class="ai-typing-bubble">
+                    <span class="label">Maxx AI is typing</span>
+                    <span class="dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="ai-chat-input">
+                <input type="text" id="aiInput" placeholder="Ask me about Hotel Maxx...">
+                <button id="aiSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="ai-search-toggle">
+                <button class="ai-search-btn" id="aiSearchToggleBtn" aria-pressed="false" aria-label="Toggle web search">
+                    <span class="ai-search-icon"><i class="fas fa-search"></i></span>
+                    <span class="ai-search-label">Enable Web Search</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rooms Hero Section - Blended with Header -->
+    <section class="rooms-hero">
+        <div class="rooms-hero-background"></div>
+        <div class="floating-elements">
+            <div class="floating-element fe-1"></div>
+            <div class="floating-element fe-2"></div>
+            <div class="floating-element fe-3"></div>
+            <div class="floating-element fe-4"></div>
+        </div>
+        <div class="rooms-hero-content">
+            <h1>Luxury Rooms & Suites</h1>
+            <p>Experience unparalleled comfort in our thoughtfully designed accommodations, each crafted to provide the perfect retreat for your stay in Kohalpur. Discover our collection of premium rooms and suites.</p>
+            <div class="cta-buttons" style="margin-top: 40px;">
+                <a href="#rooms" class="btn btn-primary bounce-on-hover">Explore Rooms</a>
+                <a href="#availability" class="btn btn-secondary bounce-on-hover">Check Availability</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Availability Grid -->
+    <section class="py-6 px-6">
+        <h2 class="text-xl font-semibold">Live Room Availability</h2>
+        <div class="availability-grid rooms-container" id="liveRooms"></div>
+    </section>
+
+    <!-- Room Availability Checker -->
+    <section id="availability">
+        <div class="section-title">
+            <h2 data-aos="fade-up">Check Room Availability</h2>
+            <p data-aos="fade-up" data-aos-delay="200">Find the perfect room for your stay dates</p>
+        </div>
+        <div class="availability-checker" id="availabilityChecker">
+            <h3>Check Room Availability</h3>
+            <form class="availability-form" id="roomsAvailabilityForm">
+                <div class="form-group">
+                    <label for="checkin">Check-in Date</label>
+                    <input type="date" id="checkin" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout">Check-out Date</label>
+                    <input type="date" id="checkout" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="adults">Adults</label>
+                    <input type="number" id="adults" class="form-control" min="1" value="2" required>
+                </div>
+                <div class="form-group">
+                    <label for="children">Children</label>
+                    <input type="number" id="children" class="form-control" min="0" value="0" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Check Availability</button>
+            </form>
+                        <script>
+                            // Redirect rooms availability form to check.html with query params
+                            (function(){
+                                const form = document.getElementById('roomsAvailabilityForm');
+                                if (form) {
+                                    form.addEventListener('submit', (e) => {
+                                        e.preventDefault();
+                                        // scope queries to this form to get the exact user-entered values
+                                        const checkinEl = form.querySelector('#checkin');
+                                        const checkoutEl = form.querySelector('#checkout');
+                                        const adultsEl = form.querySelector('#adults');
+                                        const childrenEl = form.querySelector('#children');
+                                        const checkin = checkinEl ? checkinEl.value : '';
+                                        const checkout = checkoutEl ? checkoutEl.value : '';
+                                        const adults = adultsEl ? adultsEl.value : '1';
+                                        const children = childrenEl ? childrenEl.value : '0';
+                                        // ensure required fields are present
+                                        if (!checkin || !checkout) {
+                                            if (typeof form.reportValidity === 'function') {
+                                                form.reportValidity();
+                                            } else {
+                                                alert('Please select both check-in and check-out dates.');
+                                            }
+                                            return;
+                                        }
+                                        if (new Date(checkout) <= new Date(checkin)) {
+                                            alert('Check-out date must be after check-in date');
+                                            return;
+                                        }
+                                        const qs = new URLSearchParams({ checkin, checkout, adults, children });
+                                        window.location.href = '/check.html?' + qs.toString();
+                                    });
+                                }
+                            })();
+                        </script>
+        </div>
+    </section>
+
+    <!-- Rooms Detail Section -->
+    <section class="rooms-detail" id="rooms">
+        <div class="section-title">
+            <h2 data-aos="fade-up">Our Room Collection</h2>
+            <p data-aos="fade-up" data-aos-delay="200">Choose from our selection of beautifully appointed rooms and suites</p>
+        </div>
+        
+        <div class="room-detail-container">
+            <!-- Standard Suite -->
+            <div class="room-detail" id="standardSuite" data-aos="fade-up">
+                <div class="room-detail-image">
+                    <img class="lazy" data-src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Standard Suite at Hotel Maxx Kohalpur">
+                    <div class="room-image-overlay">
+                        <h3>Standard Suite</h3>
+                    </div>
+                </div>
+                <div class="room-detail-content">
+                    <h3>Standard Suite</h3>
+                    <p>Our Standard Suite offers comfortable and well-appointed accommodation with all essential amenities, perfect for budget-conscious travelers seeking quality lodging without compromising on comfort.</p>
+                    <p>Featuring a cozy queen bed, modern furnishings, and a private bathroom, this suite provides everything you need for a restful stay. Ideal for solo travelers or couples looking for value and convenience.</p>
+                    
+                    <div class="room-features-grid">
+                        <div class="room-feature-item">
+                            <i class="fas fa-user-friends"></i>
+                            <span>2 Guests</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-bed"></i>
+                            <span>Queen Bed</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>30 m²</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-wifi"></i>
+                            <span>Free Wi-Fi</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-tv"></i>
+                            <span>LED TV</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-snowflake"></i>
+                            <span>Air Conditioning</span>
+                        </div>
+                    </div>
+                    
+                    <div class="room-price-section">
+                        <div class="room-price">रु 2,500 <span>/ night (1 adult)</span></div>
+                        <a href="booking.html?room=standard" class="btn btn-primary bounce-on-hover">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deluxe Room -->
+            <div class="room-detail" id="deluxeRoom" data-aos="fade-up">
+                <div class="room-detail-image">
+                    <img class="lazy" data-src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Deluxe Room at Hotel Maxx Kohalpur">
+                    <div class="room-image-overlay">
+                        <h3>Deluxe Room</h3>
+                    </div>
+                </div>
+                <div class="room-detail-content">
+                    <h3>Deluxe Room</h3>
+                    <p>Our Deluxe Room offers spacious and elegantly furnished accommodation with modern amenities and a comfortable seating area, perfect for solo travelers or couples seeking extra comfort.</p>
+                    <p>This room features a luxurious king bed, premium linens, and enhanced amenities to ensure a truly relaxing stay. The additional space and refined decor create an atmosphere of understated luxury.</p>
+                    
+                    <div class="room-features-grid">
+                        <div class="room-feature-item">
+                            <i class="fas fa-user-friends"></i>
+                            <span>2 Guests</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-bed"></i>
+                            <span>King Bed</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>35 m²</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-wifi"></i>
+                            <span>Free Wi-Fi</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-tv"></i>
+                            <span>Smart TV</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-snowflake"></i>
+                            <span>Air Conditioning</span>
+                        </div>
+                    </div>
+                    
+                    <div class="room-price-section">
+                        <div class="room-price">रु 3,000 <span>/ night (1 adult)</span></div>
+                        <a href="booking.html?room=deluxe" class="btn btn-primary bounce-on-hover">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Junior Suite -->
+            <div class="room-detail" id="juniorSuite" data-aos="fade-up">
+                <div class="room-detail-image">
+                    <img class="lazy" data-src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Junior Suite at Hotel Maxx Kohalpur">
+                    <div class="room-image-overlay">
+                        <h3>Junior Suite</h3>
+                    </div>
+                </div>
+                <div class="room-detail-content">
+                    <h3>Junior Suite</h3>
+                    <p>Our luxurious Junior Suite features a separate living area, making it perfect for business travelers or extended stays. Enjoy panoramic city views and enhanced amenities in this spacious accommodation.</p>
+                    <p>The suite includes a comfortable king bed, a dedicated work area, and a cozy seating space perfect for relaxing or entertaining. With its sophisticated design and premium features, the Junior Suite offers an elevated hotel experience.</p>
+                    
+                    <div class="room-features-grid">
+                        <div class="room-feature-item">
+                            <i class="fas fa-user-friends"></i>
+                            <span>3 Guests</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-bed"></i>
+                            <span>King Bed + Sofa</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>55 m²</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-wifi"></i>
+                            <span>Free Wi-Fi</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-tv"></i>
+                            <span>Smart TV</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-snowflake"></i>
+                            <span>Air Conditioning</span>
+                        </div>
+                    </div>
+                    
+                    <div class="room-price-section">
+                        <div class="room-price">रु 4,500 <span>/ night (1 adult)</span></div>
+                        <a href="booking.html?room=junior" class="btn btn-primary bounce-on-hover">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Triple Deluxe -->
+            <div class="room-detail" id="tripleDeluxe" data-aos="fade-up">
+                <div class="room-detail-image">
+                    <img class="lazy" data-src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Triple Deluxe at Hotel Maxx Kohalpur">
+                    <div class="room-image-overlay">
+                        <h3>Triple Deluxe</h3>
+                    </div>
+                </div>
+                <div class="room-detail-content">
+                    <h3>Triple Deluxe</h3>
+                    <p>Our spacious Triple Deluxe room is perfect for families or groups, featuring comfortable bedding and ample space for relaxation. With three single beds, this room comfortably accommodates up to three guests.</p>
+                    <p>Ideal for families traveling with children or friends sharing accommodation, the Triple Deluxe offers the perfect balance of space, comfort, and functionality. The room includes a mini fridge for your convenience.</p>
+                    
+                    <div class="room-features-grid">
+                        <div class="room-feature-item">
+                            <i class="fas fa-user-friends"></i>
+                            <span>3 Guests</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-bed"></i>
+                            <span>Three Single Beds</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>45 m²</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-wifi"></i>
+                            <span>Free Wi-Fi</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-tv"></i>
+                            <span>LED TV</span>
+                        </div>
+                        <div class="room-feature-item">
+                            <i class="fas fa-utensils"></i>
+                            <span>Mini Fridge</span>
+                        </div>
+                    </div>
+                    
+                    <div class="room-price-section">
+                        <div class="room-price">रु 3,500 <span>/ night (1 adult)</span></div>
+                        <a href="booking.html?room=triple" class="btn btn-primary bounce-on-hover">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Room Amenities Section - Improved like home.html -->
+    <section class="room-amenities">
+        <div class="section-title">
+            <h2 data-aos="fade-up">Room Amenities</h2>
+            <p data-aos="fade-up" data-aos-delay="200">All our rooms include these premium amenities for your comfort</p>
+        </div>
+        <div class="amenities-grid">
+            <div class="amenity-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="amenity-icon">
+                    <i class="fas fa-wifi"></i>
+                </div>
+                <h3>Free Wi-Fi</h3>
+                <p>High-speed internet access throughout your stay to keep you connected with work and loved ones.</p>
+            </div>
+            <div class="amenity-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="amenity-icon">
+                    <i class="fas fa-tv"></i>
+                </div>
+                <h3>LED/Smart TV</h3>
+                <p>Entertainment with cable channels and streaming options for your relaxation after a long day.</p>
+            </div>
+            <div class="amenity-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="amenity-icon">
+                    <i class="fas fa-snowflake"></i>
+                </div>
+                <h3>Air Conditioning</h3>
+                <p>Individual climate control for your comfort, ensuring the perfect temperature year-round.</p>
+            </div>
+            <div class="amenity-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="amenity-icon">
+                    <i class="fas fa-coffee"></i>
+                </div>
+                <h3>Tea/Coffee Maker</h3>
+                <p>In-room facilities for your morning brew, with complimentary tea and coffee supplies.</p>
+            </div>
+            <div class="amenity-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="amenity-icon">
+                    <i class="fas fa-shower"></i>
+                </div>
+                <h3>Private Bathroom</h3>
+                <p>En-suite with premium toiletries, fluffy towels, and a refreshing shower or bath.</p>
+            </div>
+            <div class="amenity-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="amenity-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <h3>Direct Dial Phone</h3>
+                <p>For local and international calls, with direct access to our 24/7 concierge service.</p>
+            </div>
+            <div class="amenity-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="amenity-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Electronic Safe</h3>
+                <p>Secure storage for your valuables, providing peace of mind during your stay.</p>
+            </div>
+            <div class="amenity-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="amenity-icon">
+                    <i class="fas fa-concierge-bell"></i>
+                </div>
+                <h3>24/7 Room Service</h3>
+                <p>Round-the-clock service for your needs, from dining to additional amenities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="section-title">
+            <h2 data-aos="fade-up">Ready to Book Your Stay?</h2>
+            <p data-aos="fade-up" data-aos-delay="200">Experience luxury and comfort at Hotel Maxx Kohalpur</p>
+        </div>
+        <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
+            <a href="booking.html" class="btn btn-primary bounce-on-hover">Book Now</a>
+            <a href="contact.html" class="btn btn-secondary bounce-on-hover">Contact Us</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Hotel Maxx</h3>
+                <p>Experience luxury and comfort at Hotel Maxx, where we redefine hospitality with our premium services and amenities.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-tripadvisor"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="home.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="aboutus.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="ourservices.html"><i class="fas fa-chevron-right"></i> Our Services and Amenities</a></li>
+                    <li><a href="rooms.html"><i class="fas fa-chevron-right"></i> Rooms</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Red Cross, Kohalpur, Lumbini Province, 21904, Nepal</a></li>
+                    <li><a href="tel:+977081542077"><i class="fas fa-phone-alt"></i> +977 081 542077</a></li>
+                    <li><a href="mailto:info@hotelmaxx.com.np"><i class="fas fa-envelope"></i> info@hotelmaxx.com.np</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Hotel Maxx. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- AOS Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100,
+            disable: function() {
+                return window.innerWidth < 768;
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('active');
+            // Change icon when menu is active
+            const icon = this.querySelector('i');
+            if (document.getElementById('mainNav').classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mainNav a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('mainNav').classList.remove('active');
+                const icon = document.querySelector('.menu-toggle i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Header scroll effect
+        function updateHeader() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+
+        window.addEventListener('scroll', function() {
+            requestAnimationFrame(updateHeader);
+        });
+
+        // Logo click to scroll to top
+        document.getElementById('logo').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.getElementById('mainNav').classList.remove('active');
+                    const icon = document.querySelector('.menu-toggle i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+
+        // Room availability form handling
+        const roomsForm = document.getElementById('roomsAvailabilityForm');
+        if (roomsForm) {
+            roomsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const checkinEl = roomsForm.querySelector('#checkin');
+                const checkoutEl = roomsForm.querySelector('#checkout');
+                const adultsEl = roomsForm.querySelector('#adults');
+                const childrenEl = roomsForm.querySelector('#children');
+                const checkin = checkinEl ? checkinEl.value : '';
+                const checkout = checkoutEl ? checkoutEl.value : '';
+                const adults = adultsEl ? adultsEl.value : '1';
+                const children = childrenEl ? childrenEl.value : '0';
+                if (!checkin || !checkout) {
+                    if (typeof form.reportValidity === 'function') form.reportValidity();
+                    else alert('Please select both check-in and check-out dates.');
+                    return;
+                }
+                if (new Date(checkout) <= new Date(checkin)) {
+                    alert('Check-out date must be after check-in date');
+                    return;
+                }
+                const qs = new URLSearchParams({ checkin, checkout, adults, children });
+                window.location.href = '/check.html?' + qs.toString();
+            });
+        }
+
+        // Set minimum date for check-in to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('checkin').setAttribute('min', today);
+        
+        // Update checkout min date when checkin date changes
+        document.getElementById('checkin').addEventListener('change', function() {
+            document.getElementById('checkout').setAttribute('min', this.value);
+        });
+
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            // Toggle theme
+            if (document.body.getAttribute('data-theme') === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Lazy Loading Images with IntersectionObserver
+        const lazyImages = document.querySelectorAll('img.lazy');
+        
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.add('loaded');
+                    imageObserver.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px 100px 0px'
+        });
+        
+        lazyImages.forEach(img => {
+            imageObserver.observe(img);
+        });
+
+        // Custom animations for elements when they come into view
+        const animatedElements = document.querySelectorAll('.room-detail, .amenity-card, .availability-checker');
+        
+        const animationObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                    animationObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        animatedElements.forEach(element => {
+            animationObserver.observe(element);
+        });
+
+        // AI Assistant is handled centrally by js/ai-assistant.js
+        // The shared script will wire toggle, send, typing indicator, and web-search toggle.
+
+        // Parallax effect for hero background
+        function updateParallax() {
+            const heroBackground = document.querySelector('.rooms-hero-background');
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            if (heroBackground) {
+                heroBackground.style.transform = `translate3d(0, ${rate}px, 0)`;
+            }
+        }
+
+        window.addEventListener('scroll', function() {
+            requestAnimationFrame(updateParallax);
+        });
+    </script>
+
+    <!-- AI Assistant Script (centralized) -->
+    <script src="js/ai-assistant.js"></script>
+    <script>
+        // Initialize AI Assistant
+        aiAssistant.init('aiAssistant');
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+    <section class="rooms-section" style="padding:40px 5%;">
+        <h2 style="text-align:center">Live Room Availability</h2>
+        <div id="roomsContainer" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:16px;max-width:1100px;margin-left:auto;margin-right:auto"></div>
+    </section>
+    <script src="/js/rooms.js"></script>
+    <script>document.addEventListener('DOMContentLoaded',()=>{ if(window.Rooms) Rooms.startAutoRefresh('#roomsContainer',5000); });</script>
+</html>

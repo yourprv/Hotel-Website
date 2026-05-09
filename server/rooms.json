@@ -1,0 +1,70 @@
+[
+  {
+    "name": "Deluxe Room",
+    "type": "Deluxe Room",
+    "capacity": 2,
+    "bed": "Bed",
+    "price": 0,
+    "description": "",
+    "totalRooms": 17,
+    "availableRooms": 5,
+    "image": "",
+    "available": 17,
+    "total": 5,
+    "scheduledBlocks": []
+  },
+  {
+    "name": "Standard Room",
+    "type": "Standard Room",
+    "capacity": 2,
+    "bed": "Bed",
+    "price": 0,
+    "description": "",
+    "totalRooms": 12,
+    "availableRooms": 5,
+    "image": "",
+    "available": 12,
+    "total": 5,
+    "scheduledBlocks": [
+      {
+        "id": "BLK-7608b0ff-8584-43c8-9f63-8ae59690c317",
+        "qty": 1,
+        "reason": "Admin blocked",
+        "until": "2026-01-08T22:14:00.000Z"
+      },
+      {
+        "id": "BLK-5ce7624f-a076-4e14-ab1f-0f47fa3e51fc",
+        "qty": 1,
+        "reason": "Admin blocked",
+        "until": "2026-01-08T22:17:00.000Z"
+      }
+    ]
+  },
+  {
+    "name": "Suite Room",
+    "type": "Suite Room",
+    "capacity": 2,
+    "bed": "Bed",
+    "price": 0,
+    "description": "",
+    "totalRooms": 15,
+    "availableRooms": 5,
+    "image": "",
+    "available": 15,
+    "total": 5
+  },
+  {
+    "name": "Family Room",
+    "type": "Family Room",
+    "capacity": 2,
+    "bed": "Bed",
+    "price": 0,
+    "description": "",
+    "totalRooms": 10,
+    "availableRooms": 4,
+    "image": "",
+    "available": 10,
+    "total": 5,
+    "scheduledBlocks": []
+  }
+]

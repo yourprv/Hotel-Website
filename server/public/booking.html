@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Stay | Hotel Maxx Kohalpur | Luxury 4-Star Business Hotel in Banke, Nepal</title>
+    <meta name="description" content="Book your stay at Hotel Maxx Kohalpur. Premium 4-star business hotel with rooftop pool, spa, fine dining & breathtaking views.">
+    <meta name="keywords" content="Hotel Maxx Kohalpur, book hotel, hotel booking, luxury hotel Nepal, Kohalpur hotel reservation">
+    <meta name="author" content="Hotel Maxx">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.hotelmaxx.com.np/booking.html">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hotelmaxx.com.np/booking.html">
+    <meta property="og:title" content="Book Your Stay | Hotel Maxx Kohalpur | Luxury 4-Star Business Hotel in Banke, Nepal">
+    <meta property="og:description" content="Book your stay at Hotel Maxx Kohalpur. Premium business-class hotel with rooftop pool, spa, fine dining, and breathtaking views.">
+    <meta property="og:image" content="https://www.hotelmaxx.com.np/images/hotel-maxx-social.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.hotelmaxx.com.np/booking.html">
+    <meta property="twitter:title" content="Book Your Stay | Hotel Maxx Kohalpur | Luxury 4-Star Business Hotel in Banke, Nepal">
+    <meta property="twitter:description" content="Book your stay at Hotel Maxx Kohalpur. Premium business-class hotel with rooftop pool, spa, fine dining, and breathtaking views.">
+    <meta property="twitter:image" content="https://www.hotelmaxx.com.np/images/hotel-maxx-social.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="maxx.png">
+    <!-- Socket.io client for real-time updates (booking page) -->
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- AOS Library for Scroll Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #c19a6b;
+            --secondary: #1a2c3e;
+            --accent: #e6d2b9;
+            --light: #f8f5f0;
+            --dark: #0f1c28;
+            --text: #333333;
+            --glass-dark: #0d1a26;
+            --white: #ffffff;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #ffffff;
+            --footer-bg: #1a2c3e;
+            --header-bg: rgba(13, 26, 38, 0.85);
+            --border-color: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0a121f;
+            --text-color: #f5f5f5;
+            --card-bg: #151f2e;
+            --footer-bg: #0d1724;
+            --header-bg: rgba(13, 26, 38, 0.85);
+            --light: #1a2c3e;
+            --border-color: #2a3b4c;
+            --text: #f5f5f5;
+            --secondary: #2d4a6c;
+            --glass-dark: #0d1724;
+        }
+
+        /* Enhanced Dark Mode Styles */
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, var(--bg-color) 0%, #0d1724 100%);
+            color: var(--text-color);
+        }
+
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p, span, li, a, label, input, textarea {
+            color: var(--text-color);
+        }
+
+        /* Header - start transparent, apply visible background when scrolled */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            transition: all 0.4s ease;
+            box-shadow: none;
+            border-bottom: none;
+        }
+
+        header.scrolled {
+            background: var(--header-bg);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            padding: 15px 5%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Dark mode header adjustments */
+        [data-theme="dark"] header {
+            background: linear-gradient(to bottom, rgba(15, 28, 40, 0.9), rgba(15, 28, 40, 0.7));
+        }
+
+        [data-theme="dark"] header.scrolled {
+            background: var(--header-bg);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 0 15px rgba(255, 255, 255, 0.2),
+                0 0 30px rgba(193, 154, 107, 0.15),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: pulse 3s infinite;
+            transition: all 0.5s ease;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .logo:before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.1) 50%, 
+                rgba(255,255,255,0) 100%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: shine 3s infinite;
+        }
+
+        .logo:hover {
+            transform: scale(1.05) translateZ(0);
+            box-shadow: 
+                0 0 25px rgba(255, 255, 255, 0.3),
+                0 0 50px rgba(193, 154, 107, 0.2),
+                inset 0 0 20px rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .logo img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            filter: brightness(1.1) contrast(1.1);
+            transition: all 0.5s ease;
+        }
+
+        .logo:hover img {
+            transform: scale(1.05) translateZ(0);
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+            position: relative;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            padding: 8px 0;
+            transition: all 0.3s;
+            position: relative;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-size: 1rem;
+            background: transparent;
+        }
+
+        /* Underline animation for regular links */
+        nav ul li a:not(.book-btn):after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:not(.book-btn):hover:after {
+            width: 100%;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+            background: transparent;
+        }
+
+        /* Book Now button styling */
+        .book-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(193, 154, 107, 0.3);
+        }
+
+        .book-btn:hover {
+            background: var(--accent);
+            color: var(--secondary);
+            transform: translateY(-3px) translateZ(0);
+            box-shadow: 0 6px 20px rgba(193, 154, 107, 0.4);
+        }
+
+        /* Keep Book Now button appearance consistent in dark mode */
+        [data-theme="dark"] .book-btn {
+            background: var(--primary) !important;
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(193, 154, 107, 0.3) !important;
+        }
+
+        [data-theme="dark"] .book-btn:hover {
+            background: var(--accent) !important;
+            color: var(--secondary) !important;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--text-color);
+            max-width: 600px;
+            margin: 20px auto 0;
+            font-size: 1.1rem;
+        }
+
+        /* Booking Hero Section - Text always white */
+        .booking-hero {
+            height: 60vh;
+            background: linear-gradient(rgba(15, 28, 40, 0.7), rgba(15, 28, 40, 0.8)), 
+                        url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 0;
+            padding-top: 140px;
+        }
+
+        .booking-hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            color: white !important;
+        }
+
+        .booking-hero-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: white !important;
+        }
+
+        /* Ensure white text in dark mode for hero section */
+        [data-theme="dark"] .booking-hero-content h1,
+        [data-theme="dark"] .booking-hero-content p {
+            color: white !important;
+        }
+
+        /* Booking Container */
+        .booking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .booking-form {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .booking-summary {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(193, 154, 107, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .room-option {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .room-option:hover {
+            border-color: var(--primary);
+        }
+
+        .room-option.selected {
+            border-color: var(--primary);
+            background: rgba(193, 154, 107, 0.05);
+        }
+
+        .room-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .room-info h4 {
+            margin-bottom: 5px;
+            color: var(--secondary);
+        }
+
+        .room-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(193, 154, 107, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            color: var(--secondary);
+            transform: translateY(-5px) translateZ(0);
+            box-shadow: 0 8px 20px rgba(193, 154, 107, 0.5);
+        }
+
+        /* Terms and Conditions Checkbox */
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            margin: 25px 0;
+            padding: 15px;
+            background: rgba(193, 154, 107, 0.05);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .terms-checkbox input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 3px;
+            transform: scale(1.2);
+        }
+
+        .terms-checkbox label {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-color);
+        }
+
+        .terms-link {
+            color: var(--primary);
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .terms-link:hover {
+            color: #a57c4c;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 10px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--secondary);
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: white;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .terms-content h4 {
+            margin: 20px 0 10px;
+            color: var(--secondary);
+        }
+
+        .terms-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .terms-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .terms-content li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        /* Footer - Copyright text always white */
+        footer {
+            background: var(--footer-bg);
+            color: white;
+            padding: 60px 5% 25px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--accent);
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            bottom: -8px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .footer-column p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            color: #ccc;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px) translateZ(0);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: white !important;
+            font-size: 0.9rem;
+        }
+
+        /* Ensure white copyright text in dark mode */
+        [data-theme="dark"] .copyright {
+            color: white !important;
+        }
+
+        /* AI Assistant Styles */
+        .ai-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+
+        .ai-toggle {
+            background: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(193, 154, 107, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .ai-toggle:hover {
+            background: var(--accent);
+            color: var(--secondary);
+            transform: scale(1.1) translateZ(0);
+        }
+
+        .ai-toggle span {
+            position: absolute;
+            white-space: nowrap;
+            background: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            right: 70px;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .ai-toggle:hover span {
+            opacity: 1;
+            right: 75px;
+        }
+
+        .ai-chat-container {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .ai-chat-container.active {
+            display: flex;
+        }
+
+        .ai-header {
+            background: var(--secondary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* AI header text to be white in both modes */
+        .ai-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .ai-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ai-message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .ai-message.user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-message.bot {
+            align-self: flex-start;
+            background: var(--light);
+            color: var(--text-color);
+            border-bottom-left-radius: 5px;
+        }
+
+        .ai-message.bot strong {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .ai-chat-input {
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            outline: none;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .ai-chat-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ai-chat-input button:hover {
+            background: var(--accent);
+            color: var(--secondary);
+        }
+
+        .ai-search-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            padding: 0 15px 15px;
+        }
+
+        /* Modern search toggle button */
+        .ai-search-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            font-size: 0.95rem;
+        }
+
+        .ai-search-btn .ai-search-icon { width: 20px; height:20px; display:inline-flex; align-items:center; justify-content:center; }
+
+        .ai-search-btn[aria-pressed="true"] { background: var(--primary); color: white; border-color: transparent; box-shadow: 0 6px 18px rgba(193,154,107,0.18); }
+
+        .ai-typing { display:none; margin-top:10px; padding:0 20px }
+        .ai-typing.active { display:block }
+
+        /* Polished typing bubble */
+        .ai-typing-bubble {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 20px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+            max-width: 320px;
+        }
+
+        .ai-typing-bubble .label { font-size: 0.9rem; color: var(--secondary); font-weight:600 }
+
+        .ai-typing-bubble .dots { display:inline-flex; gap:6px; margin-left:6px; }
+        .ai-typing-bubble .dot { width:8px; height:8px; background:var(--primary); border-radius:50%; opacity:0.3; transform: translateY(0); }
+        .ai-typing-bubble .dot:nth-child(1) { animation: dotBounce 0.9s infinite 0s; }
+        .ai-typing-bubble .dot:nth-child(2) { animation: dotBounce 0.9s infinite 0.15s; }
+        .ai-typing-bubble .dot:nth-child(3) { animation: dotBounce 0.9s infinite 0.3s; }
+
+        @keyframes dotBounce { 0% { transform: translateY(0); opacity:0.35 } 50% { transform: translateY(-6px); opacity:1 } 100% { transform: translateY(0); opacity:0.35 } }
+
+        .ai-bot-actions { margin-top:8px; display:flex; gap:8px }
+        .ai-retry-btn { background: transparent; border:1px solid var(--border-color); padding:6px 10px; border-radius:8px; cursor:pointer }
+        .ai-retry-btn:hover { background:var(--primary); color:white; border-color:transparent }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* New Animations */
+        @keyframes pulse {
+            0% { transform: scale(1) translateZ(0); }
+            50% { transform: scale(1.03) translateZ(0); }
+            100% { transform: scale(1) translateZ(0); }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg) translateZ(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg) translateZ(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100px) translateZ(0);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0) translateZ(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100px) translateZ(0);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0) translateZ(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateZ(0);
+            }
+            40% {
+                transform: translateY(-10px) translateZ(0);
+            }
+            60% {
+                transform: translateY(-5px) translateZ(0);
+            }
+        }
+
+        /* Enhanced Animations */
+        .bounce-on-hover:hover {
+            animation: bounce 1s;
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .fade-in {
+            animation: fadeUp 1s ease-out;
+        }
+
+        /* Responsive Design - Improved Mobile Experience */
+        @media (max-width: 1200px) {
+            .booking-grid {
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .booking-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .booking-hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .ai-toggle span {
+                display: none;
+            }
+
+            .ai-chat-container {
+                width: 300px;
+                height: 450px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Improved Mobile Header */
+            header {
+                padding: 15px 5%;
+                width: 100%;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(15, 28, 40, 0.98);
+                backdrop-filter: blur(10px);
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 999;
+                padding: 0;
+            }
+            
+            nav.active {
+                display: flex;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                padding: 0;
+            }
+            
+            nav ul li {
+                margin: 0;
+                text-align: center;
+                padding: 15px 0;
+            }
+            
+            nav ul li a {
+                font-size: 1.2rem;
+                padding: 10px 20px;
+            }
+            
+            /* Improved Mobile Hero Section */
+            .booking-hero {
+                height: 50vh;
+                padding-top: 100px;
+            }
+
+            .booking-hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .booking-hero-content p {
+                font-size: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .booking-container {
+                padding: 60px 15px;
+            }
+            
+            .booking-form, .booking-summary {
+                padding: 20px;
+            }
+            
+            .modal-content {
+                max-height: 90vh;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            header.scrolled {
+                padding: 15px 5%;
+            }
+
+            .ai-assistant {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .ai-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .ai-chat-container {
+                width: 280px;
+                height: 400px;
+                right: -10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .booking-hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .ai-chat-container {
+                width: 260px;
+                height: 380px;
+            }
+            
+            .terms-checkbox {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .terms-checkbox input[type="checkbox"] {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Dark Mode Styles for other elements */
+        [data-theme="dark"] .section-title h2 {
+            color: #f5f5f5;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .section-title p {
+            color: #e6e6e6;
+        }
+
+        [data-theme="dark"] .booking-form,
+        [data-theme="dark"] .booking-summary {
+            background: var(--card-bg);
+            border: 1px solid rgba(193, 154, 107, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .booking-form::before,
+        [data-theme="dark"] .booking-summary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        [data-theme="dark"] .form-control {
+            background: rgba(10, 18, 31, 0.7);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+            color: #f5f5f5;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .form-control:focus {
+            background: rgba(10, 18, 31, 0.9);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(193, 154, 107, 0.2), 0 0 20px rgba(193, 154, 107, 0.1);
+            color: #f5f5f5;
+        }
+
+        [data-theme="dark"] .form-control::placeholder {
+            color: #a0a0a0;
+        }
+
+        [data-theme="dark"] .room-option {
+            border: 1px solid rgba(193, 154, 107, 0.1);
+        }
+
+        [data-theme="dark"] .room-option:hover {
+            border-color: var(--primary);
+        }
+
+        [data-theme="dark"] .room-option.selected {
+            border-color: var(--primary);
+            background: rgba(193, 154, 107, 0.1);
+        }
+
+        [data-theme="dark"] .room-info h4 {
+            color: #f5f5f5;
+        }
+
+        [data-theme="dark"] .room-price {
+            color: var(--primary);
+        }
+
+        [data-theme="dark"] .summary-item {
+            border-bottom: 1px solid rgba(193, 154, 107, 0.1);
+        }
+
+        [data-theme="dark"] .total {
+            border-top: 2px solid rgba(193, 154, 107, 0.1);
+        }
+
+        [data-theme="dark"] .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #d4af7a 100%);
+            color: #1a2c3e;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 4px 20px rgba(193, 154, 107, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        [data-theme="dark"] .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        [data-theme="dark"] .btn-primary:hover {
+            background: linear-gradient(135deg, #d4af7a 0%, #e6d2b9 100%);
+            transform: translateY(-3px) translateZ(0);
+            box-shadow: 0 8px 30px rgba(193, 154, 107, 0.6);
+        }
+
+        /* Terms and Conditions Dark Mode */
+        [data-theme="dark"] .terms-checkbox {
+            background: rgba(193, 154, 107, 0.05);
+            border: 1px solid rgba(193, 154, 107, 0.1);
+        }
+
+        [data-theme="dark"] .terms-checkbox label {
+            color: #e6e6e6;
+        }
+
+        [data-theme="dark"] .terms-link {
+            color: var(--accent);
+        }
+
+        [data-theme="dark"] .terms-link:hover {
+            color: #d4af7a;
+        }
+
+        /* Modal Dark Mode */
+        [data-theme="dark"] .modal-content {
+            background: var(--card-bg);
+            border: 1px solid rgba(193, 154, 107, 0.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="dark"] .modal-header {
+            background: linear-gradient(135deg, var(--secondary) 0%, #2d4a6c 100%);
+            border-bottom: 1px solid rgba(193, 154, 107, 0.1);
+        }
+
+        [data-theme="dark"] .terms-content h4 {
+            color: #f5f5f5;
+        }
+
+        [data-theme="dark"] .terms-content p, 
+        [data-theme="dark"] .terms-content li {
+            color: #e6e6e6;
+        }
+
+        /* AI Assistant Dark Mode */
+        [data-theme="dark"] .ai-chat-container {
+            background: linear-gradient(135deg, #151f2e 0%, #1a2c3e 100%);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .ai-header {
+            background: linear-gradient(135deg, var(--secondary) 0%, #2d4a6c 100%);
+            border-bottom: 1px solid rgba(193, 154, 107, 0.2);
+        }
+
+        [data-theme="dark"] .ai-message.bot {
+            background: rgba(193, 154, 107, 0.1);
+            color: #f5f5f5;
+            border: 1px solid rgba(193, 154, 107, 0.1);
+        }
+
+        [data-theme="dark"] .ai-message.user {
+            background: linear-gradient(135deg, var(--primary) 0%, #d4af7a 100%);
+            color: #1a2c3e;
+        }
+
+        [data-theme="dark"] .ai-chat-input {
+            border-top: 1px solid rgba(193, 154, 107, 0.1);
+            background: rgba(10, 18, 31, 0.7);
+        }
+
+        [data-theme="dark"] .ai-chat-input input {
+            background: rgba(10, 18, 31, 0.9);
+            border: 1px solid rgba(193, 154, 107, 0.2);
+            color: #f5f5f5;
+        }
+
+        [data-theme="dark"] .ai-chat-input input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(193, 154, 107, 0.2);
+        }
+
+        [data-theme="dark"] .ai-chat-input button {
+            background: linear-gradient(135deg, var(--primary) 0%, #d4af7a 100%);
+            color: #1a2c3e;
+            box-shadow: 0 2px 10px rgba(193, 154, 107, 0.3);
+        }
+
+        [data-theme="dark"] .ai-chat-input button:hover {
+            background: linear-gradient(135deg, #d4af7a 0%, #e6d2b9 100%);
+            transform: scale(1.1) translateZ(0);
+            box-shadow: 0 4px 15px rgba(193, 154, 107, 0.5);
+        }
+
+        [data-theme="dark"] .ai-search-toggle {
+            color: #e6e6e6;
+            background: rgba(10, 18, 31, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Schema Markup for Booking Page -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Hotel",
+        "name": "Hotel Maxx",
+        "description": "Premium business-class hotel in Kohalpur offering modern luxury with traditional Nepalese warmth.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Red Cross, Kohalpur",
+            "addressLocality": "Kohalpur",
+            "addressRegion": "Lumbini Province",
+            "postalCode": "21904",
+            "addressCountry": "Nepal"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 28.195968789650955,
+            "longitude": 81.68540914657724
+        },
+        "telephone": "+977-081-542077",
+        "email": "info@hotelmaxx.com.np",
+        "url": "https://www.hotelmaxx.com.np",
+        "priceRange": "$$",
+        "amenityFeature": [
+            "Free WiFi",
+            "Swimming Pool",
+            "Restaurant",
+            "Spa",
+            "Fitness Center",
+            "Conference Rooms",
+            "Bar"
+        ],
+        "starRating": {
+            "@type": "Rating",
+            "ratingValue": "4.5"
+        }
+    }
+    </script>
+
+    <!-- Header Section (Exact copy from home.html) -->
+    <header id="header">
+        <div class="logo-container">
+            <div class="logo" id="logo">
+                <img src="maxx.png" alt="Hotel Maxx Logo - Luxury Hotel in Kohalpur, Nepal">
+            </div>
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="aboutus.html">About US</a></li>
+                <li><a href="ourservices.html">Our Services and Amenities</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="rooms.html">Rooms</a></li>           
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="booking.html" class="book-btn">Book Now</a></li>
+                <li>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- AI Assistant (Exact copy from home.html) -->
+    <div class="ai-assistant" id="aiAssistant">
+        <div class="ai-toggle" id="aiToggle">
+            <i class="fas fa-robot"></i>
+            <span>Maxx AI</span>
+        </div>
+        <div class="ai-chat-container" id="aiChat">
+            <div class="ai-header">
+                <h3>Maxx AI Assistant</h3>
+                <button class="ai-close" id="aiClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="ai-chat-messages" id="aiMessages">
+                <div class="ai-message bot">
+                    Hello! I'm Maxx AI, your virtual assistant for Hotel Maxx in Kohalpur, Nepal. How can I help you with your booking today?
+                </div>
+            </div>
+            <div class="ai-typing" id="aiTyping" role="status" aria-live="polite">
+                <div class="ai-typing-bubble">
+                    <span class="label">Maxx AI is typing</span>
+                    <span class="dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="ai-chat-input">
+                <input type="text" id="aiInput" placeholder="Ask me about booking...">
+                <button id="aiSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="ai-search-toggle">
+                <button class="ai-search-btn" id="aiSearchToggleBtn" aria-pressed="false" aria-label="Toggle web search">
+                    <span class="ai-search-icon"><i class="fas fa-search"></i></span>
+                    <span class="ai-search-label">Enable Web Search</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms and Conditions Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Hotel Maxx Terms and Conditions</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="terms-content">
+                    <p>Welcome to Hotel Maxx! Before making a reservation or utilizing our services, we kindly request you to carefully read and understand the following terms and conditions:</p>
+                    
+                    <h4>Reservation and Check-In:</h4>
+                    <ul>
+                        <li>Reservations can be made online, via telephone, or in person, subject to availability.</li>
+                        <li>Check-in time is at 2:00 PM local time, and check-out time is at 12:00 PM local time. Early check-in or late check-out may be available upon request, subject to additional charges and availability.</li>
+                        <li>A valid government-issued identification document, such as a passport or driver's license, must be presented during check-in.</li>
+                    </ul>
+                    
+                    <h4>Room Occupancy and Age Policy:</h4>
+                    <ul>
+                        <li>The maximum occupancy per room is as per the room type booked. Additional charges may apply for extra guests.</li>
+                        <li>Guests must be at least 18 years old to check-in. Minors must be accompanied by an adult who assumes full responsibility for them.</li>
+                    </ul>
+                    
+                    <h4>Payment and Cancellation:</h4>
+                    <ul>
+                        <li>Full payment is required upon check-in unless a prepayment or deposit has been made.</li>
+                        <li>We accept major credit cards, cash, and bank transfers as forms of payment.</li>
+                        <li>Cancellation policies and charges may vary depending on the rate and reservation type. Please refer to the specific terms mentioned during the booking process.</li>
+                    </ul>
+                    
+                    <h4>Hotel Facilities and Services:</h4>
+                    <ul>
+                        <li>The use of hotel facilities and services is subject to availability and may require additional charges.</li>
+                        <li>Guests are responsible for any damages caused to hotel property or any loss of hotel belongings during their stay.</li>
+                        <li>The hotel reserves the right to refuse service to any guest who violates hotel policies or engages in inappropriate behavior.</li>
+                    </ul>
+                    
+                    <h4>Privacy and Data Protection:</h4>
+                    <ul>
+                        <li>Hotel Maxx respects your privacy and is committed to protecting your personal information. Please refer to our Privacy Policy for more details.</li>
+                    </ul>
+                    
+                    <h4>Force Majeure:</h4>
+                    <ul>
+                        <li>Hotel Maxx shall not be liable for any failure or delay in the performance of its obligations under these terms and conditions due to events beyond its control, including but not limited to natural disasters, acts of terrorism, or government regulations.</li>
+                    </ul>
+                    
+                    <h4>Liability:</h4>
+                    <ul>
+                        <li>Hotel Maxx shall not be held liable for any loss, damage, injury, or inconvenience caused during your stay, except to the extent caused by its own negligence or willful misconduct.</li>
+                    </ul>
+                    
+                    <h4>Amendments to Terms and Conditions:</h4>
+                    <ul>
+                        <li>Hotel Maxx reserves the right to amend or modify these terms and conditions at any time. Any changes will be effective immediately upon posting on our website or through other communication channels.</li>
+                    </ul>
+                    
+                    <p>By making a reservation or utilizing our services, you acknowledge that you have read, understood, and agreed to abide by the above terms and conditions. Enjoy your stay at Hotel Maxx!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Page Content -->
+    <section class="booking-hero">
+        <div class="booking-hero-content">
+            <h1 data-aos="fade-up">Book Your Stay</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Experience luxury and comfort at Hotel Maxx Kohalpur</p>
+        </div>
+    </section>
+
+    <section class="booking-container">
+        <div class="booking-grid">
+            <div class="booking-form" data-aos="fade-right">
+                <h2>Reservation Details</h2>
+                <form id="bookingForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="checkin">Check-in Date</label>
+                            <input type="date" id="checkin" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout">Check-out Date</label>
+                            <input type="date" id="checkout" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="adults">Adults</label>
+                            <select id="adults" class="form-control" required>
+                                <option value="1">1 Adult</option>
+                                <option value="2" selected>2 Adults</option>
+                                <option value="3">3 Adults</option>
+                                <option value="4">4 Adults</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="children">Children</label>
+                            <select id="children" class="form-control">
+                                <option value="0" selected>0 Children</option>
+                                <option value="1">1 Child</option>
+                                <option value="2">2 Children</option>
+                                <option value="3">3 Children</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Room Type</label>
+                        <div class="room-option" data-room="standard">
+                            <div class="room-details">
+                                <div class="room-info">
+                                    <h4>Standard Suite</h4>
+                                    <p>Comfortable suite with all essential amenities</p>
+                                </div>
+                                <div class="room-price">रु 2,500 / night</div>
+                            </div>
+                        </div>
+                        <div class="room-option" data-room="deluxe">
+                            <div class="room-details">
+                                <div class="room-info">
+                                    <h4>Deluxe Room</h4>
+                                    <p>Spacious room with modern amenities</p>
+                                </div>
+                                <div class="room-price">रु 3,000 / night</div>
+                            </div>
+                        </div>
+                        <div class="room-option" data-room="junior">
+                            <div class="room-details">
+                                <div class="room-info">
+                                    <h4>Junior Suite</h4>
+                                    <p>Luxurious suite with separate living area</p>
+                                </div>
+                                <div class="room-price">रु 4,500 / night</div>
+                            </div>
+                        </div>
+                        <div class="room-option" data-room="triple">
+                            <div class="room-details">
+                                <div class="room-info">
+                                    <h4>Triple Deluxe</h4>
+                                    <p>Spacious room perfect for families or groups</p>
+                                </div>
+                                <div class="room-price">रु 3,500 / night</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capacity info & extra bed option (frontend only) -->
+                    <div id="capacityInfo" style="margin-top:10px; padding:12px; border-radius:8px; display:none; background:#fff7ed; border:1px solid #fed7aa;">
+                        <p id="capacityWarningText" style="margin:0 0 8px 0; color:#92400e; font-weight:600;"></p>
+                        <label style="font-weight:600; color:#92400e;"><input type="checkbox" id="extraBedCheckbox" style="margin-right:8px;" /> Add extra bed (रु 500)</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="specialRequests">Special Requests</label>
+                        <textarea id="specialRequests" class="form-control" rows="4" placeholder="Any special requests or requirements..."></textarea>
+                    </div>
+                    
+                    <h3>Guest Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Terms and Conditions Checkbox -->
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="termsAgreement" required>
+                        <label for="termsAgreement">
+                            I have read and agree to the <span class="terms-link" id="termsLink">terms and conditions</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem;">Complete Booking</button>
+                </form>
+            </div>
+            
+            <div class="booking-summary" data-aos="fade-left">
+                <h2>Booking Summary</h2>
+                <div class="summary-item">
+                    <span>Room Type:</span>
+                    <span id="summary-room">Not selected</span>
+                </div>
+                <div class="summary-item">
+                    <span>Check-in:</span>
+                    <span id="summary-checkin">--</span>
+                </div>
+                <div class="summary-item">
+                    <span>Check-out:</span>
+                    <span id="summary-checkout">--</span>
+                </div>
+                <div class="summary-item">
+                    <span>Nights:</span>
+                    <span id="summary-nights">0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Guests:</span>
+                    <span id="summary-guests">0 Adults, 0 Children</span>
+                </div>
+                <div class="summary-item">
+                    <span>Room Rate:</span>
+                    <span id="summary-rate">रु 0 / night</span>
+                </div>
+                <div class="summary-item">
+                    <span>Subtotal:</span>
+                    <span id="summary-subtotal">रु 0</span>
+                </div>
+                <div class="summary-item" id="summary-extra-bed-row" style="display:none;">
+                    <span>Extra bed:</span>
+                    <span id="summary-extra-bed">रु 0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Tax (13%):</span>
+                    <span id="summary-tax">रु 0</span>
+                </div>
+                <div class="total">
+                    <span>Total:</span>
+                    <span id="summary-total">रु 0</span>
+                </div>
+                
+                <div class="amenities-preview" style="margin-top: 30px;">
+                    <h3>What's Included</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="margin-bottom: 10px;"><i class="fas fa-wifi" style="color: var(--primary); margin-right: 10px;"></i> Free High-Speed WiFi</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-swimming-pool" style="color: var(--primary); margin-right: 10px;"></i> Rooftop Pool Access</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-utensils" style="color: var(--primary); margin-right: 10px;"></i> Breakfast Included</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-concierge-bell" style="color: var(--primary); margin-right: 10px;"></i> 24/7 Concierge Service</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-dumbbell" style="color: var(--primary); margin-right: 10px;"></i> Fitness Center Access</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section (Exact copy from home.html) -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Hotel Maxx</h3>
+                <p>Experience luxury and comfort at Hotel Maxx, where we redefine hospitality with our premium services and amenities.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-tripadvisor"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="home.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="aboutus.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="ourservices.html"><i class="fas fa-chevron-right"></i> Our Services and Amenities</a></li>
+                    <li><a href="rooms.html"><i class="fas fa-chevron-right"></i> Rooms</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Red Cross, Kohalpur, Lumbini Province, 21904, Nepal</a></li>
+                    <li><a href="tel:+977081542077"><i class="fas fa-phone-alt"></i> +977 081 542077</a></li>
+                    <li><a href="mailto:info@hotelmaxx.com.np"><i class="fas fa-envelope"></i> info@hotelmaxx.com.np</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Hotel Maxx. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- AOS Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 500,
+            once: true,
+            offset: 100,
+            disable: function() {
+                return window.innerWidth < 768;
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('active');
+            // Change icon when menu is active
+            const icon = this.querySelector('i');
+            if (document.getElementById('mainNav').classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mainNav a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('mainNav').classList.remove('active');
+                const icon = document.querySelector('.menu-toggle i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Header scroll effect (transparent initially, apply .scrolled after scrolling)
+        function updateHeader() {
+            const header = document.getElementById('header');
+            if (!header) return;
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+
+        // Use requestAnimationFrame for smooth scroll handling
+        window.addEventListener('scroll', function() {
+            requestAnimationFrame(updateHeader);
+        });
+
+        // Logo click to scroll to top
+        document.getElementById('logo').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.getElementById('mainNav').classList.remove('active');
+                    const icon = document.querySelector('.menu-toggle i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            // Toggle theme
+            if (document.body.getAttribute('data-theme') === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Set minimum date for check-in to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('checkin').setAttribute('min', today);
+        
+        // Update checkout min date when checkin date changes
+        document.getElementById('checkin').addEventListener('change', function() {
+            document.getElementById('checkout').setAttribute('min', this.value);
+            updateBookingSummary();
+        });
+
+        // Update checkout when changed
+        document.getElementById('checkout').addEventListener('change', updateBookingSummary);
+        
+        // Update guests when changed
+        document.getElementById('adults').addEventListener('change', updateBookingSummary);
+        document.getElementById('children').addEventListener('change', updateBookingSummary);
+
+        // Room selection
+        let selectedRoom = null;
+        const roomOptions = document.querySelectorAll('.room-option');
+        
+        roomOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Prevent selecting if room is marked unavailable
+                if (this.classList.contains('disabled') || this.getAttribute('data-available') === '0' || this.style.opacity === '0.6') {
+                    return; // ignore clicks on unavailable room options
+                }
+                roomOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedRoom = this.getAttribute('data-room');
+                updateBookingSummary();
+            });
+        });
+
+        // Room prices
+        const roomPrices = {
+            'standard': 2500,
+            'deluxe': 3000,
+            'junior': 4500,
+            'triple': 3500
+        };
+
+        // Room names
+        const roomNames = {
+            'standard': 'Standard Suite',
+            'deluxe': 'Deluxe Room',
+            'junior': 'Junior Suite',
+            'triple': 'Triple Deluxe'
+        };
+
+        // Update booking summary
+        // Frontend capacity rules per room type
+        const frontendCapacities = {
+            'standard': { adults: 2, children: 1, total: 3 },
+            'deluxe': { adults: 2, children: 1, total: 3 },
+            'junior': { adults: 2, children: 1, total: 3 },
+            'triple': { adults: 3, children: 1, total: 4 }
+        };
+
+        function updateBookingSummary() {
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            const adults = Number(document.getElementById('adults').value);
+            const children = Number(document.getElementById('children').value);
+            const extraBedCheckbox = document.getElementById('extraBedCheckbox');
+            const capacityInfo = document.getElementById('capacityInfo');
+            const capacityWarningText = document.getElementById('capacityWarningText');
+
+            // Update summary fields
+            document.getElementById('summary-checkin').textContent = checkin || '--';
+            document.getElementById('summary-checkout').textContent = checkout || '--';
+            document.getElementById('summary-guests').textContent = `${adults} Adults, ${children} Children`;
+
+            // Calculate nights
+            let nights = 0;
+            if (checkin && checkout) {
+                const checkinDate = new Date(checkin);
+                const checkoutDate = new Date(checkout);
+                const timeDiff = checkoutDate.getTime() - checkinDate.getTime();
+                nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            }
+
+            document.getElementById('summary-nights').textContent = nights;
+
+            const totalGuests = adults + children;
+
+            // Capacity checks and extra-bed logic
+            if (selectedRoom) {
+                const cap = frontendCapacities[selectedRoom] || { adults: 2, children: 1, total: 3 };
+
+                if (totalGuests <= cap.total) {
+                    // fits normally
+                    capacityInfo.style.display = 'none';
+                    extraBedCheckbox.checked = false;
+                } else if (totalGuests === (cap.total + 1)) {
+                    // fits with one extra bed
+                    capacityInfo.style.display = 'block';
+                    capacityWarningText.textContent = `This exceeds the normal capacity for ${roomNames[selectedRoom]}. You can add an extra bed (रु 500) to accommodate the extra guest.`;
+                    extraBedCheckbox.disabled = false;
+                } else {
+                    // exceeds even with extra bed
+                    capacityInfo.style.display = 'block';
+                    capacityWarningText.textContent = `This configuration exceeds the room capacity even with an extra bed. Please book multiple rooms or reduce guest count.`;
+                    extraBedCheckbox.disabled = true;
+                    extraBedCheckbox.checked = false;
+                }
+            } else {
+                capacityInfo.style.display = 'none';
+            }
+
+            // Calculate costs if valid
+            if (selectedRoom && nights > 0) {
+                const roomRate = roomPrices[selectedRoom];
+                let subtotal = roomRate * nights;
+
+                // Extra bed charge
+                const extraBedCharge = (document.getElementById('extraBedCheckbox').checked ? 500 : 0);
+
+                // Update extra-bed row
+                const extraBedRow = document.getElementById('summary-extra-bed-row');
+                const extraBedCell = document.getElementById('summary-extra-bed');
+                if (extraBedCharge > 0) {
+                    extraBedRow.style.display = 'flex';
+                    extraBedCell.textContent = `रु ${extraBedCharge.toLocaleString()}`;
+                } else {
+                    extraBedRow.style.display = 'none';
+                    extraBedCell.textContent = 'रु 0';
+                }
+
+                const tax = (subtotal + extraBedCharge) * 0.13;
+                const total = subtotal + extraBedCharge + tax;
+
+                document.getElementById('summary-room').textContent = roomNames[selectedRoom];
+                document.getElementById('summary-rate').textContent = `रु ${roomRate.toLocaleString()} / night`;
+                document.getElementById('summary-subtotal').textContent = `रु ${(subtotal + extraBedCharge).toLocaleString()}`;
+                document.getElementById('summary-tax').textContent = `रु ${tax.toLocaleString()}`;
+                document.getElementById('summary-total').textContent = `रु ${total.toLocaleString()}`;
+            } else {
+                document.getElementById('summary-room').textContent = selectedRoom ? roomNames[selectedRoom] : 'Not selected';
+                document.getElementById('summary-rate').textContent = 'रु 0 / night';
+                document.getElementById('summary-subtotal').textContent = 'रु 0';
+                document.getElementById('summary-tax').textContent = 'रु 0';
+                document.getElementById('summary-total').textContent = 'रु 0';
+            }
+        }
+
+        // Booking page: Real-time availability (Socket.io)
+        function findAvailabilityForOption(optionEl, rooms) {
+            const key = optionEl.getAttribute('data-room') || '';
+            const nameMap = { 'standard': 'standard', 'deluxe': 'deluxe', 'junior': 'suite', 'triple': 'family' };
+            const needle = nameMap[key] || key;
+            const found = rooms.find(r => (r.name || '').toLowerCase().includes(needle) || (r.type || '').toLowerCase().includes(needle));
+            const available = found ? (found.available ?? found.availableRooms ?? 0) : null;
+            return available;
+        }
+
+        function updateRoomAvailability(rooms) {
+            roomOptions.forEach(opt => {
+                let avail = findAvailabilityForOption(opt, rooms);
+                let badge = opt.querySelector('.availability-badge-mini');
+                if (!badge) {
+                    badge = document.createElement('div');
+                    badge.className = 'availability-badge-mini';
+                    badge.style.marginTop = '8px';
+                    badge.style.fontSize = '0.9rem';
+                    opt.appendChild(badge);
+                }
+                if (avail === null) {
+                    badge.textContent = '';
+                    opt.removeAttribute('data-available');
+                    opt.classList.remove('disabled');
+                    opt.style.opacity = '';
+                } else if (avail === 0) {
+                    badge.textContent = 'Currently unavailable';
+                    opt.setAttribute('data-available', '0');
+                    opt.classList.add('disabled');
+                    opt.style.opacity = '0.6';
+                } else {
+                    badge.textContent = `${avail} rooms available`;
+                    opt.setAttribute('data-available', String(avail));
+                    opt.classList.remove('disabled');
+                    opt.style.opacity = '';
+                }
+            });
+        }
+
+        let bookingSocket = null;
+        function initSocketBooking() {
+            if (typeof io === 'undefined') return;
+            bookingSocket = io();
+
+            bookingSocket.on('room_update', data => {
+                const rooms = data.rooms || [];
+                updateRoomAvailability(rooms);
+            });
+        }
+
+        // Wire extra-bed checkbox change to update summary
+        document.getElementById('extraBedCheckbox').addEventListener('change', updateBookingSummary);
+
+        // Preselect extra bed if passed in query string
+        (function() {
+            const u = new URL(window.location.href);
+            const roomParam = u.searchParams.get('room');
+            if (roomParam) {
+                const r = roomParam.toLowerCase();
+                // match by exact data-room, or by substring contained in the slug (e.g. 'standard-room')
+                let opt = Array.from(roomOptions).find(o => (o.getAttribute('data-room') || '').toLowerCase() === r);
+                if (!opt) {
+                    opt = Array.from(roomOptions).find(o => r.includes((o.getAttribute('data-room') || '').toLowerCase()) || (o.getAttribute('data-room') || '').toLowerCase().includes(r));
+                }
+                if (opt) opt.click();
+            }
+            if (u.searchParams.get('extraBed') === '1') {
+                // user came from check page with extra-bed mode
+                document.getElementById('extraBedCheckbox').checked = true;
+            }
+        })();
+
+        // Initialize socket for booking page
+        initSocketBooking();
+
+        // Terms and Conditions Modal
+        const termsModal = document.getElementById('termsModal');
+        const termsLink = document.getElementById('termsLink');
+        const modalClose = document.getElementById('modalClose');
+
+        // Open modal when terms link is clicked
+        termsLink.addEventListener('click', function() {
+            termsModal.classList.add('active');
+        });
+
+        // Close modal when close button is clicked
+        modalClose.addEventListener('click', function() {
+            termsModal.classList.remove('active');
+        });
+
+        // Close modal when clicking outside the modal content
+        termsModal.addEventListener('click', function(e) {
+            if (e.target === termsModal) {
+                termsModal.classList.remove('active');
+            }
+        });
+
+        // Form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!selectedRoom) {
+                alert('Please select a room type');
+                return;
+            }
+
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+
+            if (!checkin || !checkout) {
+                alert('Please select both check-in and check-out dates');
+                return;
+            }
+
+            const termsAgreement = document.getElementById('termsAgreement').checked;
+            if (!termsAgreement) {
+                alert('Please agree to the terms and conditions to proceed with your booking');
+                return;
+            }
+
+            // Capacity validation (frontend only)
+            const adults = Number(document.getElementById('adults').value);
+            const children = Number(document.getElementById('children').value);
+            const totalGuests = adults + children;
+            const cap = frontendCapacities[selectedRoom] || { adults: 2, children: 1, total: 3 };
+            const extraBedChecked = document.getElementById('extraBedCheckbox').checked;
+
+            if (totalGuests <= cap.total || (totalGuests === (cap.total + 1) && extraBedChecked)) {
+                // proceed (frontend-level confirmation)
+                let msg = 'Thank you for your booking! We will contact you shortly to confirm your reservation.';
+                if (extraBedChecked) msg += '\n\nNote: An extra bed charge of रु 500 will be applied at check-in.';
+                alert(msg);
+
+                // Reset form
+                this.reset();
+                roomOptions.forEach(opt => opt.classList.remove('selected'));
+                selectedRoom = null;
+                document.getElementById('termsAgreement').checked = false;
+                updateBookingSummary();
+            } else {
+                alert('Your selected guest count exceeds the room capacity. Please book multiple rooms or reduce the number of guests.');
+                return;
+            }
+        });
+
+        // AI Assistant is handled by the centralized script (see below)
+    </script>
+    <!-- AI Assistant Script -->
+    <script src="js/ai-assistant.js"></script>
+    <script>
+        // Initialize AI Assistant (uses the existing HTML markup with id "aiAssistant")
+        if (window.aiAssistant && typeof window.aiAssistant.init === 'function') {
+            aiAssistant.init('aiAssistant');
+        }
+    </script>
+</body>
+</html>

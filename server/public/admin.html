@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin - Hotel Maxx</title>
+  <link rel="icon" type="image/png" href="/maxx.png">
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Socket.io client -->
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="/css/rooms.css">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --glass-bg: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .room-card {
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+    }
+
+    .room-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .room-card.blocked {
+      border-left: 4px solid var(--warning);
+      background: linear-gradient(145deg, #fffbeb 0%, #fef3c7 100%);
+    }
+
+    .stat-card {
+      background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: scale(1.02);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 0.625rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .btn-blue {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .btn-action {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    .btn-action:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .status-live {
+      background: rgba(16, 185, 129, 0.15);
+      color: #059669;
+    }
+
+    .status-offline {
+      background: rgba(239, 68, 68, 0.15);
+      color: #dc2626;
+    }
+
+    .pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .pulse-green {
+      background: #10b981;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    .pulse-red {
+      background: #ef4444;
+      animation: none;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .activity-log {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      color: #e2e8f0;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      border-radius: 12px;
+      padding: 1rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .activity-entry {
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+    }
+
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      max-width: 400px;
+      width: 90%;
+    }
+
+    input[type="password"],
+    input[type="datetime-local"] {
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      width: 100%;
+      transition: border-color 0.2s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .room-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="max-w-6xl mx-auto p-6">
+    <!-- Connection Status -->
+    <div id="connectionStatus" class="fixed top-4 right-4 status-indicator status-offline z-50">
+      <span class="pulse pulse-red"></span>
+      <span>Connecting...</span>
+    </div>
+
+    <!-- Login Box -->
+    <div id="loginBox" class="glass-card max-w-md mx-auto p-8 mt-20">
+      <div class="text-center mb-6">
+        <img src="/maxx.png" alt="Hotel Maxx" class="w-16 h-16 mx-auto mb-4 rounded-lg">
+        <h2 class="text-2xl font-bold text-gray-800">Admin Portal</h2>
+        <p class="text-gray-600 mt-2">Enter your password to manage rooms</p>
+      </div>
+      <input id="adminPassword" type="password" class="mb-4" placeholder="Enter admin password">
+      <div class="flex items-center gap-3">
+        <button id="loginBtn" class="btn-primary flex-1">Login</button>
+        <p id="loginMsg" class="text-red-600 text-sm"></p>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="hidden">
+      <!-- Header -->
+      <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-white">Admin Dashboard</h1>
+          <p class="text-indigo-200 mt-1">Manage room availability in real-time</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="logoutBtn" class="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition">
+            Logout
+          </button>
+          <button id="resetBtn" class="btn-action btn-danger">
+            Reset All
+          </button>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Total Rooms</p>
+              <p id="totalRooms" class="text-3xl font-bold text-gray-800 mt-1">0</p>
+            </div>
+            <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                </path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Available</p>
+              <p id="availableRooms" class="text-3xl font-bold text-green-600 mt-1">0</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Blocked</p>
+              <p id="blockedRooms" class="text-3xl font-bold text-amber-600 mt-1">0</p>
+            </div>
+            <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                </path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Room Management -->
+      <div class="glass-card p-6 mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+            </path>
+          </svg>
+          Room Management
+        </h2>
+        <div id="roomsContainer" class="grid gap-4 md:grid-cols-2 lg:grid-cols-2"></div>
+      </div>
+
+      <!-- Activity Log -->
+      <div class="glass-card p-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+            </path>
+          </svg>
+          Activity Log
+        </h2>
+        <div id="activityLog" class="activity-log">
+          <p class="text-gray-400">Waiting for activity...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block Modal -->
+    <div id="blockModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50">
+      <div class="modal-content p-6">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Block Room</h3>
+        <input type="hidden" id="blockRoomName">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Block Until</label>
+          <input type="datetime-local" id="blockUntil">
+        </div>
+        <p class="text-sm text-gray-500 mb-4">The room will automatically become available after this time.</p>
+        <div class="flex justify-end gap-3">
+          <button onclick="document.getElementById('blockModal').classList.add('hidden')"
+            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+            Cancel
+          </button>
+          <button id="confirmBlock" class="btn-action btn-blue">
+            Block Room
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+
+</html>
